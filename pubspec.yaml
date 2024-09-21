@@ -35,6 +35,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_test:
@@ -62,6 +63,24 @@ flutter:
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
+  assets:
+    - images/categories/electronic.png
+    - images/categories/jewellery.png
+    - images/categories/mobile.png
+    - images/categories/computer.png
+    - images/categories/home-appliances.png
+    - images/categories/clothing.png
+    - images/categories/furniture.png
+    - images/categories/artwork.png
+    - images/categories/shoe.png
+    - images/categories/automotive.png
+    - images/categories/grocery.png
+    - images/categories/other.png
+    - images/items/sofa.jpg
+    - images/items/iphone.jpg
+    - images/items/laptop.jpg
+    - images/items/shoe.jpg
+    - images/items/tshirt.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -88,7 +107,9 @@ flutter:
   fonts:
     - family: Inter
       fonts:
-         - asset: fonts/Inter_28pt-Regular.ttf
+        - asset: fonts/Inter_28pt-Regular.ttf
+        - asset: fonts/Inter_28pt-ExtraBold.ttf
+          weight: 900
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

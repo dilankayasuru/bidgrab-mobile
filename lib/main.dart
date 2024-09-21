@@ -14,9 +14,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "BidGarb",
+      themeMode: ThemeMode.light,
       theme: ThemeData(
+          fontFamily: "Inter",
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.blue,
+            onPrimary: Colors.white,
+            primary: Colors.black,
+          )),
+      darkTheme: ThemeData.dark(
         useMaterial3: true,
-        fontFamily: "Inter"
       ),
       home: const MainLayOut(),
     );
