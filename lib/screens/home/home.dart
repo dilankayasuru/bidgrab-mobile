@@ -99,7 +99,7 @@ class Home extends StatelessWidget {
                     title: 'Sofa set',
                     category: 'Furniture',
                     lastBid: 150450.00,
-                    endingIn: '4D 1h',
+                    endingIn: '4d 1h',
                     image: 'sofa.jpg',
                   ),
                   Item(

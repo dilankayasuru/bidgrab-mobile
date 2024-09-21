@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class ItemCard extends StatelessWidget {
   const ItemCard({super.key, required this.item});
+
   final Item item;
 
   @override
@@ -111,7 +112,10 @@ class ItemCard extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {},
-                  child: const Text("View Auction"),
+                  child: const Text(
+                    "View Auction",
+                    style: TextStyle(fontSize: 16),
+                  ),
                 ),
               ],
             ),
