@@ -1,6 +1,6 @@
 import 'package:bidgrab/components/itemCard.dart';
 import 'package:flutter/material.dart';
-import '../../../item.dart';
+import '../../../models/item.dart';
 
 class RecentAuctions extends StatelessWidget {
   const RecentAuctions({super.key, required this.items});

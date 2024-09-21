@@ -1,4 +1,4 @@
-import 'package:bidgrab/item.dart';
+import 'package:bidgrab/models/item.dart';
 import 'package:flutter/material.dart';
 
 class ItemCard extends StatelessWidget {

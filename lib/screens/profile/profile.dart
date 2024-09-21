@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class Profile extends StatelessWidget {
   const Profile({super.key});
 
@@ -10,9 +9,7 @@ class Profile extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Profile"),
       ),
-      body: const SafeArea(
-          child: Text("Profile")
-      ),
+      body: const SafeArea(child: Text("Profile")),
     );
   }
 }
