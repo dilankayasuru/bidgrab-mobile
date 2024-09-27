@@ -81,6 +81,8 @@ flutter:
     - images/items/laptop.jpg
     - images/items/shoe.jpg
     - images/items/tshirt.jpg
+    - images/profile/profile.jpg
+    - images/onboarding.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

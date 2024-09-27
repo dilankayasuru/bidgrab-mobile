@@ -36,8 +36,10 @@ class _ProductsState extends State<Products> {
           ) : const Text("Products"),
         ),
         leading: IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushNamed(context, '/');
+          },
+          icon: const Icon(Icons.arrow_back_rounded, color: Colors.white,),
         ),
         actions: [
           IconButton(

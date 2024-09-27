@@ -22,7 +22,7 @@ class CategoryTab extends StatelessWidget {
           Flexible(
             child: Text(
               category.name,
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16, color: Colors.black),
             ),
           ),
         ],

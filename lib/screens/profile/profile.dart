@@ -7,9 +7,164 @@ class Profile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        // title: searchOpened ? const SearchBar() : const Text("Products"),
         title: const Text("Profile"),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/');
+          },
+          icon: const Icon(Icons.arrow_back_rounded, color: Colors.white,),
+        ),
       ),
-      body: const SafeArea(child: Text("Profile")),
+      body: SafeArea(
+          child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: SizedBox(
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                "Change your profile",
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              const CircleAvatar(
+                backgroundImage: AssetImage('images/profile/profile.jpg'),
+                maxRadius: 56,
+              ),
+              const Text(
+                "Dilanka Yasuru",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              ),
+              const Text(
+                "@dilanka",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.grey,
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Profile information",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    const TextField(
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(16),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                        ),
+                        label: Text("First name"),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    const TextField(
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(16),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                        ),
+                        label: Text("Last name"),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    const TextField(
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(16),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                        ),
+                        label: Text("Email"),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    const Text(
+                      "Contact information",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    const TextField(
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(16),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                        ),
+                        label: Text("Phone"),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    const TextField(
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(16),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                        ),
+                        label: Text("Address"),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    const TextField(
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(16),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                        ),
+                        label: Text("Street"),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    const TextField(
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(16),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                        ),
+                        label: Text("District"),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: FilledButton(
+                        onPressed: () {},
+                        child: const Text("Submit"),
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      )),
     );
   }
 }

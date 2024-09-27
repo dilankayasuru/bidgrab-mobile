@@ -1,3 +1,4 @@
+import 'package:bidgrab/screens/Onboarding/Onboarding.dart';
 import 'package:bidgrab/screens/categories/categories.dart';
 import 'package:bidgrab/screens/home/home.dart';
 import 'package:bidgrab/screens/products/products.dart';
@@ -35,21 +36,25 @@ class _MainLayOutState extends State<MainLayOut> {
           },
           destinations: const [
             NavigationDestination(
-                selectedIcon: Icon(Icons.home_filled),
-                icon: Icon(Icons.home_outlined),
-                label: 'Home'),
+              selectedIcon: Icon(Icons.home_filled),
+              icon: Icon(Icons.home_outlined),
+              label: 'Home',
+            ),
             NavigationDestination(
-                selectedIcon: Icon(Icons.shopping_bag),
-                icon: Icon(Icons.shopping_bag_outlined),
-                label: 'Products'),
+              selectedIcon: Icon(Icons.shopping_bag),
+              icon: Icon(Icons.shopping_bag_outlined),
+              label: 'Products',
+            ),
             NavigationDestination(
-                selectedIcon: Icon(Icons.grid_view_rounded),
-                icon: Icon(Icons.grid_view_outlined),
-                label: 'Categories'),
+              selectedIcon: Icon(Icons.grid_view_rounded),
+              icon: Icon(Icons.grid_view_outlined),
+              label: 'Categories',
+            ),
             NavigationDestination(
-                selectedIcon: Icon(Icons.person),
-                icon: Icon(Icons.person_outline),
-                label: 'Profile'),
+              selectedIcon: Icon(Icons.person),
+              icon: Icon(Icons.person_outline),
+              label: 'Profile',
+            ),
           ],
         ),
         body: PageView(
@@ -63,7 +68,7 @@ class _MainLayOutState extends State<MainLayOut> {
             Home(),
             Products(),
             Categories(),
-            Profile(),
+            Onboarding(),
           ],
         ));
   }

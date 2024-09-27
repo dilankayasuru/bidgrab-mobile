@@ -21,14 +21,11 @@ class Home extends StatelessWidget {
                 fontSize: 24)),
         actions: [
           Container(
-            decoration: const BoxDecoration(
-                shape: BoxShape.circle, color: Colors.white),
-            margin: const EdgeInsets.only(right: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: IconButton(
                 onPressed: () {},
-                icon: const Icon(
-                  Icons.person,
-                  color: Colors.blue,
+                icon: Icon(
+                  Theme.of(context).brightness == Brightness.dark ? Icons.nightlight : Icons.sunny,
                 )),
           )
         ],

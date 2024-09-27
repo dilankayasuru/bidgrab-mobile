@@ -41,20 +41,20 @@ class Categories extends StatelessWidget {
         // title: searchOpened ? const SearchBar() : const Text("Products"),
         title: const Text("Categories"),
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, '/');
+          },
           icon: const Icon(Icons.arrow_back),
         ),
       ),
       body: SafeArea(
-        child: Expanded(
-          child: GridView.count(
-            crossAxisCount: 2,
-            padding: const EdgeInsets.all(16),
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
-            shrinkWrap: true,
-            children: categories,
-          ),
+        child: GridView.count(
+          crossAxisCount: 2,
+          padding: const EdgeInsets.all(16),
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
+          shrinkWrap: true,
+          children: categories,
         ),
       ),
     );

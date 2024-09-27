@@ -1,4 +1,5 @@
 import 'package:bidgrab/models/item.dart';
+import 'package:bidgrab/screens/products/productView.dart';
 import 'package:flutter/material.dart';
 
 class ItemCard extends StatelessWidget {
@@ -110,13 +111,31 @@ class ItemCard extends StatelessWidget {
                 const SizedBox(
                   height: 16,
                 ),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: const Text(
-                    "View Auction",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context,
+                          Productview.id,
+                          arguments: item,
+                        );
+                      },
+                      child: const Text(
+                        "View Auction",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                    FilledButton(
+                      onPressed: () {},
+                      child: const Text(
+                        "Buy Now",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           ),
