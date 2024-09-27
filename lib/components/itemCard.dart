@@ -37,13 +37,9 @@ class ItemCard extends StatelessWidget {
               image: AssetImage("images/items/${item.image}"),
               fit: BoxFit.fitWidth,
               height: 145,
-              width: 252,
-            ),
-            const SizedBox(
-              height: 8,
             ),
             Container(
-              padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+              padding: const EdgeInsets.all(8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -79,11 +75,15 @@ class ItemCard extends StatelessWidget {
                           Container(
                             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                             decoration: BoxDecoration(
-                                color: value.darkModeEnabled ? Colors.white10 : Colors.blueGrey.shade50,
+                                color: value.darkModeEnabled
+                                    ? Colors.white10
+                                    : Colors.blueGrey.shade50,
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(8)),
-                                border:
-                                    Border.all(color: value.darkModeEnabled ? Colors.white10 : Colors.blue.shade100)),
+                                border: Border.all(
+                                    color: value.darkModeEnabled
+                                        ? Colors.white10
+                                        : Colors.blue.shade100)),
                             child: Text(
                               "Rs. ${item.lastBid}",
                               style: const TextStyle(fontSize: 16),
@@ -101,11 +101,15 @@ class ItemCard extends StatelessWidget {
                           Container(
                             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                             decoration: BoxDecoration(
-                                color: value.darkModeEnabled ? Colors.white10 : Colors.blueGrey.shade50,
+                                color: value.darkModeEnabled
+                                    ? Colors.white10
+                                    : Colors.blueGrey.shade50,
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(8)),
-                                border:
-                                    Border.all(color: value.darkModeEnabled ? Colors.white10 : Colors.blue.shade100)),
+                                border: Border.all(
+                                    color: value.darkModeEnabled
+                                        ? Colors.white10
+                                        : Colors.blue.shade100)),
                             child: Text(
                               "${item.endingIn} left",
                               style: const TextStyle(fontSize: 16),
@@ -115,34 +119,36 @@ class ItemCard extends StatelessWidget {
                       )
                     ],
                   ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(
-                            context,
-                            Productview.id,
-                            arguments: item,
-                          );
-                        },
-                        child: const Text(
-                          "View Auction",
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                      FilledButton(
-                        onPressed: () {},
-                        child: const Text(
-                          "Bid",
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    ],
-                  )
+                  MediaQuery.of(context).orientation == Orientation.portrait
+                      ? Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    Productview.id,
+                                    arguments: item,
+                                  );
+                                },
+                                child: const Text(
+                                  "View Auction",
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ),
+                              FilledButton(
+                                onPressed: () {},
+                                child: const Text(
+                                  "Bid",
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ),
+                            ],
+                          ),
+                      )
+                      : Container(),
                 ],
               ),
             ),

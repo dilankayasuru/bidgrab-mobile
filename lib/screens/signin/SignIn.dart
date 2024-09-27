@@ -1,9 +1,9 @@
 import 'package:bidgrab/components/CurvedBottomContainer.dart';
 import 'package:bidgrab/models/UserProvider.dart';
+import 'package:bidgrab/models/theme.dart';
 import 'package:bidgrab/screens/signup/SignUp.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 
 class Signin extends StatefulWidget {
   const Signin({super.key});
@@ -45,49 +45,64 @@ class _SigninState extends State<Signin> {
             color: Colors.white,
           ),
         ),
+        title: MediaQuery.of(context).orientation == Orientation.portrait
+            ? null
+            : const Text(
+                "Sign in",
+                style: TextStyle(color: Colors.white),
+              ),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CurvedBottomContainer(
-              child: Container(
-                width: double.infinity,
-                color: Colors.blue,
-                child: const Column(
-                  children: [
-                    Text(
-                      "BidGrab",
-                      style: TextStyle(
-                        fontSize: 56,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 32),
-                      child: Text(
-                        textAlign: TextAlign.center,
-                        "Bid, Win, and Save Big on Unique Items!",
-                        style: TextStyle(
-                          fontSize: 24,
-                          color: Colors.white,
+            MediaQuery.of(context).orientation == Orientation.portrait
+                ? Column(
+                    children: [
+                      CurvedBottomContainer(
+                        child: Container(
+                          width: double.infinity,
+                          color: Colors.blue,
+                          child: const Column(
+                            children: [
+                              Text(
+                                "BidGrab",
+                                style: TextStyle(
+                                  fontSize: 56,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 32),
+                                child: Text(
+                                  textAlign: TextAlign.center,
+                                  "Bid, Win, and Save Big on Unique Items!",
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 72,
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 72,
-                    )
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 64,
-            ),
-            Padding(
+                      const SizedBox(
+                        height: 64,
+                      ),
+                    ],
+                  )
+                : Container(),
+            Container(
+              constraints: const BoxConstraints(maxWidth: 400),
               padding: const EdgeInsets.all(16),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextField(
                     controller: _emailController,
@@ -116,27 +131,32 @@ class _SigninState extends State<Signin> {
                   const SizedBox(
                     height: 16,
                   ),
+                  // Consumer widget to listen to changes in Userprovider.
                   Consumer<Userprovider>(
                     builder: (context, value, child) => FilledButton(
                       onPressed: () {
+                        // Attempt to log in with the provided email and password.
                         if (!value.login(
                           _emailController.text,
                           _passwordController.text,
                         )) {
+                          // If login fails, set the error message.
                           setState(() {
                             setError("Invalid email or password!");
                           });
                         } else {
+                          // If login is successful, clear the error message
+                          // and navigate to the home page.
                           setState(() {
                             setError("");
                             Navigator.pushNamed(context, '/');
                           });
                         }
                       },
+                      // Button label.
                       child: Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 12, horizontal: 8),
+                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
                         child: const Text(
                           textAlign: TextAlign.center,
                           "Sign in",
@@ -158,31 +178,40 @@ class _SigninState extends State<Signin> {
                 ],
               ),
             ),
-            const SizedBox(
-              height: 64,
+            SizedBox(
+              height: MediaQuery.of(context).orientation == Orientation.portrait
+                  ? 64
+                  : 0,
             ),
-            TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, Signup.id);
-              },
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Don't have an account?",
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
-                  ),
-                  SizedBox(
-                    width: 4,
-                  ),
-                  Text(
-                    "Sign up",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
-                  ),
-                ],
+            Container(
+              constraints: const BoxConstraints(maxWidth: 400),
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, Signup.id);
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Don't have an account?",
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                    ),
+                    const SizedBox(
+                      width: 4,
+                    ),
+                    Consumer<ThemeProvider>(
+                      builder: (context, value, child) => Text(
+                        "Sign up",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color:
+                              value.darkModeEnabled ? Colors.white : Colors.black,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             )
           ],

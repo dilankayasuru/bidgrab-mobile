@@ -13,19 +13,26 @@ class Products extends StatefulWidget {
 }
 
 class _ProductsState extends State<Products> {
+  // List of items to be displayed
   final List<Item> items = DataModel().items;
+
+  //  track if the search bar is opened
   bool searchOpened = false;
 
   @override
   Widget build(BuildContext context) {
+    // List of ItemCard widgets
     List<ItemCard> itemsWidgets = [];
+    // List of categories to be displayed in the ButtonsRow
     List<Category> categories = DataModel().categories;
+
+    // Loop items and create ItemCard widgets
     for (var item in items) {
       itemsWidgets.add(ItemCard(item: item));
     }
+
     return Scaffold(
       appBar: AppBar(
-        // title: searchOpened ? const SearchBar() : const Text("Products"),
         title: Container(
           child: searchOpened
               ? const SizedBox(
@@ -37,6 +44,7 @@ class _ProductsState extends State<Products> {
                 )
               : const Text("Products"),
         ),
+        //navigate back to the home screen
         leading: IconButton(
           onPressed: () {
             Navigator.pushNamed(context, '/');
@@ -63,16 +71,28 @@ class _ProductsState extends State<Products> {
       body: SafeArea(
         child: Column(
           children: [
-            ButtonsRow(categories: categories),
+            // Display ButtonsRow only in portrait orientation
+            MediaQuery.of(context).orientation == Orientation.portrait
+                ? ButtonsRow(categories: categories)
+                : Container(),
+            // Expanded widget to hold the GridView of items
             Expanded(
               child: GridView.count(
-                crossAxisCount: 2,
-                childAspectRatio: 0.68,
+                // Number of columns in the grid based on screen width
+                crossAxisCount: MediaQuery.of(context).size.width < 700
+                    ? 2
+                    : (MediaQuery.of(context).size.width < 1400 ? 4 : 6),
+                // Aspect ratio of the grid items based on orientation
+                childAspectRatio:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? 0.68
+                        : 0.85,
                 mainAxisSpacing: 8,
                 crossAxisSpacing: 8,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                 shrinkWrap: true,
+                // List of ItemCard widgets to be displayed in the grid
                 children: itemsWidgets,
               ),
             ),

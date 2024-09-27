@@ -39,7 +39,6 @@ class Profile extends StatelessWidget {
           child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: SizedBox(
-          width: double.infinity,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -67,117 +66,126 @@ class Profile extends StatelessWidget {
                   color: Colors.grey,
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Profile information",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    const TextField(
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(16),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(16)),
+              Center(
+                child: Container(
+                  constraints: BoxConstraints(maxWidth: MediaQuery.of(context).orientation == Orientation.portrait ? double.infinity : 320),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Profile information",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      const TextField(
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(16),
+                          border: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(16)),
+                          ),
+                          label: Text("First name"),
                         ),
-                        label: Text("First name"),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    const TextField(
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(16),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      const TextField(
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(16),
+                          border: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(16)),
+                          ),
+                          label: Text("Last name"),
                         ),
-                        label: Text("Last name"),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    const TextField(
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(16),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      const TextField(
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(16),
+                          border: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(16)),
+                          ),
+                          label: Text("Email"),
                         ),
-                        label: Text("Email"),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    const Text(
-                      "Contact information",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    const TextField(
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(16),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      const Text(
+                        "Contact information",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      const TextField(
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(16),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(16)),
+                          ),
+                          label: Text("Phone"),
                         ),
-                        label: Text("Phone"),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    const TextField(
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(16),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      const TextField(
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(16),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(16)),
+                          ),
+                          label: Text("Address"),
                         ),
-                        label: Text("Address"),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    const TextField(
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(16),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      const TextField(
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(16),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(16)),
+                          ),
+                          label: Text("Street"),
                         ),
-                        label: Text("Street"),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    const TextField(
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(16),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      const TextField(
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(16),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(16)),
+                          ),
+                          label: Text("District"),
                         ),
-                        label: Text("District"),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: FilledButton(
-                        onPressed: () {},
-                        child: const Text("Submit"),
+                      const SizedBox(
+                        height: 16,
                       ),
-                    )
-                  ],
+                      SizedBox(
+                        width: MediaQuery.of(context).orientation ==
+                                Orientation.portrait
+                            ? double.infinity
+                            : 320,
+                        child: FilledButton(
+                          onPressed: () {},
+                          child: const Text("Submit"),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               )
             ],

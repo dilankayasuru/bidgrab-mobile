@@ -6,12 +6,15 @@ import 'package:provider/provider.dart';
 class ButtonsRow extends StatelessWidget {
   const ButtonsRow({super.key, required this.categories});
 
+  // List of categories to be displayed
   final List<Category> categories;
 
   @override
   Widget build(BuildContext context) {
+    // List to hold the button widgets.
     List<Widget> items = [];
 
+    // Loop category and create an OutlinedButton
     for (var category in categories) {
       items.add(OutlinedButton(
         onPressed: () {},
@@ -26,6 +29,7 @@ class ButtonsRow extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
+            // Consumer to get the current theme and set the text color accordingly.
             Consumer<ThemeProvider>(
               builder: (context, value, child) => Text(
                 category.name,
@@ -36,11 +40,13 @@ class ButtonsRow extends StatelessWidget {
           ],
         ),
       ));
+      // Add a SizedBox for spacing between buttons.
       items.add(const SizedBox(
         width: 8,
       ));
     }
 
+    // Return a horizontally scrollable row of buttons.
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),

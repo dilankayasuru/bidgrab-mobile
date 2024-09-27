@@ -24,33 +24,44 @@ class Home extends StatelessWidget {
         actions: [
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16),
+            // Consumer widget to listen to changes in
+            // ThemeProvider (Custom provider).
             child: Consumer<ThemeProvider>(
               builder: (context, value, child) => IconButton(
+                // Toggle the theme when the button is pressed.
                 onPressed: () {
                   value.toggleTheme();
                 },
+                // Change the icon based on the current theme.
                 icon: value.darkModeEnabled
-                    ? const Icon(color: Colors.white, Icons.sunny)
-                    : const Icon(color: Colors.black, Icons.nightlight),
+                    ? const Icon(
+                        color: Colors.white, Icons.sunny) // Icon for dark mode.
+                    : const Icon(
+                        color: Colors.white70,
+                        Icons.nightlight), // Icon for light mode.
               ),
             ),
           )
         ],
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const HomeHero(),
-              HomeCategories(
-                categories: DataModel().categories,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const HomeHero(),
+            SafeArea(
+              child: Column(
+                children: [
+                  HomeCategories(
+                    categories: DataModel().categories,
+                  ),
+                  RecentAuctions(
+                    items: DataModel().items,
+                  ),
+                ],
               ),
-              RecentAuctions(
-                items: DataModel().items,
-              )
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );

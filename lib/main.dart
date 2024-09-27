@@ -9,12 +9,22 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  final bool isSystemDarkMode =
+      WidgetsBinding.instance.window.platformBrightness == Brightness.dark;
+
   runApp(
+    // MultiProvider allows multiple providers
+    // to be created and accessed down the widget tree.
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => ThemeProvider(),
+          create: (context) => ThemeProvider(
+            darkModeEnabled:
+                isSystemDarkMode, // Initialize with system dark mode setting.
+          ),
         ),
+        // ChangeNotifierProvider for Userprovider to manage user login state.
         ChangeNotifierProvider(
           create: (context) => Userprovider(),
         ),
@@ -30,29 +40,36 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    // Consumer widget to listen to changes in ThemeProvider.
     return Consumer<ThemeProvider>(
       builder: (context, value, child) => MaterialApp(
+        // Disable the debug banner in the top right corner.
         debugShowCheckedModeBanner: false,
+        // Title of the application.
         title: "BidGarb",
+        // Initial route of the application.
         initialRoute: '/',
+        // Define the routes for the application.
         routes: {
-          '/': (context) => const MainLayOut(),
-          Signup.id: (context) => const Signup(),
-          Signin.id: (context) => const Signin(),
-          Productview.id: (context) => const Productview(),
-          Profile.id: (context) => const Profile(),
+          '/': (context) => const MainLayOut(), // Main layout route (Home page).
+          Signup.id: (context) => const Signup(), // Signup screen route.
+          Signin.id: (context) => const Signin(), // Signin screen route.
+          Productview.id: (context) => const Productview(), // Product view screen route.
+          Profile.id: (context) => const Profile(), // Profile screen route.
         },
+        // Set the theme mode based on the current theme.
         themeMode: value.darkModeEnabled ? ThemeMode.dark : ThemeMode.light,
-        // themeMode: ThemeMode.dark,
+        // Define the light theme.
         theme: ThemeData(
-          fontFamily: "Inter",
-          useMaterial3: true,
-          colorSchemeSeed: Colors.blue,
+          fontFamily: "Inter", // Set the default font family.
+          useMaterial3: true, // Use Material 3 design.
+          colorSchemeSeed: Colors.blue, // Seed color for the color scheme.
         ),
+        // Define the dark theme.
         darkTheme: ThemeData(
-          useMaterial3: true,
-          brightness: Brightness.dark,
-          colorSchemeSeed: Colors.blue,
+          useMaterial3: true, // Use Material 3 design.
+          brightness: Brightness.dark, // Set the brightness to dark.
+          colorSchemeSeed: Colors.blue, // Seed color for the color scheme.
         ),
       ),
     );

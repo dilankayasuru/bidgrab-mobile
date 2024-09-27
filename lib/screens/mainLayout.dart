@@ -66,6 +66,7 @@ class _MainLayOutState extends State<MainLayOut> {
               currentIndex = index;
             });
           },
+          // Pages in bottom navigation bar
           children: [
             const Home(),
             const Products(),

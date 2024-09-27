@@ -19,18 +19,21 @@ class BottomCurveClipper extends CustomClipper<Path> {
   Path getClip(Size size) {
     Path path = Path();
 
-    // Start from the top-left corner
-    path.lineTo(0.0, size.height - 50); // Move near the bottom left
+    // Start the path from the top-left corner and draw a line to near the bottom-left corner.
+    path.lineTo(0.0, size.height - 50);
 
-    // Define one large curve for the bottom
-    var controlPoint = Offset(size.width / 2, size.height + 15); // Control point to create the curve
+    // Define the control point and end point for the curve.
+    var controlPoint = Offset(size.width / 2, size.height + 15); // Create the curve
     var endPoint = Offset(size.width, size.height - 50); // End point at bottom right
+
+    // Draw a quadratic bezier curve from the current point to the end point using the control point.
     path.quadraticBezierTo(controlPoint.dx, controlPoint.dy, endPoint.dx, endPoint.dy);
 
-    // Move to the top-right corner
+    // Draw a line from the end point to the top-right corner.
     path.lineTo(size.width, 0.0);
 
-    path.close(); // Complete the path
+    // Close the path to form a complete shape.
+    path.close();
 
     return path;
   }
