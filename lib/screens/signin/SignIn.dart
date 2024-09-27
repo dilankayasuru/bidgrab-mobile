@@ -4,7 +4,6 @@ import 'package:bidgrab/screens/signup/SignUp.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../profile/profile.dart';
 
 class Signin extends StatefulWidget {
   const Signin({super.key});
@@ -130,7 +129,7 @@ class _SigninState extends State<Signin> {
                         } else {
                           setState(() {
                             setError("");
-                            Navigator.pushNamed(context, Profile.id);
+                            Navigator.pushNamed(context, '/');
                           });
                         }
                       },
@@ -146,10 +145,13 @@ class _SigninState extends State<Signin> {
                       ),
                     ),
                   ),
+                  const SizedBox(
+                    height: 16,
+                  ),
                   Text(
                     error,
                     style: const TextStyle(
-                      fontSize: 20,
+                      fontSize: 18,
                       color: Colors.redAccent,
                     ),
                   )

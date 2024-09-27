@@ -8,8 +8,6 @@ import 'package:bidgrab/screens/signup/SignUp.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'models/item.dart';
-
 void main() {
   runApp(
     MultiProvider(
@@ -49,9 +47,12 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           fontFamily: "Inter",
           useMaterial3: true,
+          colorSchemeSeed: Colors.blue,
         ),
-        darkTheme: ThemeData.dark(
+        darkTheme: ThemeData(
           useMaterial3: true,
+          brightness: Brightness.dark,
+          colorSchemeSeed: Colors.blue,
         ),
       ),
     );

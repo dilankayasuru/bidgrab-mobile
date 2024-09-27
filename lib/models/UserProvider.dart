@@ -1,4 +1,3 @@
-import 'package:bidgrab/screens/profile/profile.dart';
 import 'package:flutter/material.dart';
 
 class Userprovider with ChangeNotifier {

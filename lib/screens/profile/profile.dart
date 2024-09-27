@@ -1,6 +1,4 @@
 import 'package:bidgrab/models/UserProvider.dart';
-import 'package:bidgrab/screens/home/home.dart';
-import 'package:bidgrab/screens/mainLayout.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

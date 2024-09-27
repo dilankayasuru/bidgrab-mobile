@@ -1,5 +1,7 @@
 import 'package:bidgrab/models/category.dart';
+import 'package:bidgrab/models/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ButtonsRow extends StatelessWidget {
   const ButtonsRow({super.key, required this.categories});
@@ -24,7 +26,13 @@ class ButtonsRow extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            Text(category.name)
+            Consumer<ThemeProvider>(
+              builder: (context, value, child) => Text(
+                category.name,
+                style: TextStyle(
+                    color: value.darkModeEnabled ? Colors.white : Colors.black),
+              ),
+            )
           ],
         ),
       ));
