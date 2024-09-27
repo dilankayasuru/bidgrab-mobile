@@ -27,19 +27,23 @@ class _ProductsState extends State<Products> {
       appBar: AppBar(
         // title: searchOpened ? const SearchBar() : const Text("Products"),
         title: Container(
-          child: searchOpened ? const SizedBox(
-            height: 44,
-            width: 240,
-            child: SearchBar(
-              hintText: "Search items...",
-            ),
-          ) : const Text("Products"),
+          child: searchOpened
+              ? const SizedBox(
+                  height: 44,
+                  width: 240,
+                  child: SearchBar(
+                    hintText: "Search items...",
+                  ),
+                )
+              : const Text("Products"),
         ),
         leading: IconButton(
           onPressed: () {
             Navigator.pushNamed(context, '/');
           },
-          icon: const Icon(Icons.arrow_back_rounded, color: Colors.white,),
+          icon: const Icon(
+            Icons.arrow_back_rounded,
+          ),
         ),
         actions: [
           IconButton(

@@ -1,9 +1,11 @@
+import 'package:bidgrab/models/UserProvider.dart';
 import 'package:bidgrab/screens/Onboarding/Onboarding.dart';
 import 'package:bidgrab/screens/categories/categories.dart';
 import 'package:bidgrab/screens/home/home.dart';
 import 'package:bidgrab/screens/products/products.dart';
 import 'package:bidgrab/screens/profile/profile.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MainLayOut extends StatefulWidget {
   const MainLayOut({super.key});
@@ -64,11 +66,14 @@ class _MainLayOutState extends State<MainLayOut> {
               currentIndex = index;
             });
           },
-          children: const [
-            Home(),
-            Products(),
-            Categories(),
-            Onboarding(),
+          children: [
+            const Home(),
+            const Products(),
+            const Categories(),
+            Consumer<Userprovider>(
+              builder: (context, value, child) =>
+                  value.loggedIn ? const Profile() : const Onboarding(),
+            ),
           ],
         ));
   }

@@ -1,7 +1,13 @@
+import 'package:bidgrab/models/UserProvider.dart';
+import 'package:bidgrab/screens/home/home.dart';
+import 'package:bidgrab/screens/mainLayout.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});
+
+  static String id = '/profile';
 
   @override
   Widget build(BuildContext context) {
@@ -13,8 +19,23 @@ class Profile extends StatelessWidget {
           onPressed: () {
             Navigator.pushNamed(context, '/');
           },
-          icon: const Icon(Icons.arrow_back_rounded, color: Colors.white,),
+          icon: const Icon(
+            Icons.arrow_back_rounded,
+          ),
         ),
+        actions: [
+          Consumer<Userprovider>(
+            builder: (context, value, child) => IconButton(
+              onPressed: () {
+                value.loggedIn = false;
+                Navigator.pushNamed(context, '/');
+              },
+              icon: const Icon(
+                Icons.logout,
+              ),
+            ),
+          )
+        ],
       ),
       body: SafeArea(
           child: SingleChildScrollView(

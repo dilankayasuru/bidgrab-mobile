@@ -130,7 +130,7 @@ class ItemCard extends StatelessWidget {
                     FilledButton(
                       onPressed: () {},
                       child: const Text(
-                        "Buy Now",
+                        "Bid",
                         style: TextStyle(fontSize: 16),
                       ),
                     ),

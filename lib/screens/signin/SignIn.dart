@@ -1,11 +1,36 @@
 import 'package:bidgrab/components/CurvedBottomContainer.dart';
+import 'package:bidgrab/models/UserProvider.dart';
 import 'package:bidgrab/screens/signup/SignUp.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class Signin extends StatelessWidget {
+import '../profile/profile.dart';
+
+class Signin extends StatefulWidget {
   const Signin({super.key});
 
   static String id = 'signin';
+
+  @override
+  State<Signin> createState() => _SigninState();
+}
+
+class _SigninState extends State<Signin> {
+  String error = "";
+
+  void setError(String message) {
+    error = message;
+  }
+
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +41,10 @@ class Signin extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const Icon(Icons.arrow_back_rounded, color: Colors.white,),
+          icon: const Icon(
+            Icons.arrow_back_rounded,
+            color: Colors.white,
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -55,13 +83,16 @@ class Signin extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 64,),
+            const SizedBox(
+              height: 64,
+            ),
             Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
-                  const TextField(
-                    decoration: InputDecoration(
+                  TextField(
+                    controller: _emailController,
+                    decoration: const InputDecoration(
                       contentPadding: EdgeInsets.all(16),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(64)),
@@ -72,9 +103,10 @@ class Signin extends StatelessWidget {
                   const SizedBox(
                     height: 16,
                   ),
-                  const TextField(
+                  TextField(
                     obscureText: true,
-                    decoration: InputDecoration(
+                    controller: _passwordController,
+                    decoration: const InputDecoration(
                       contentPadding: EdgeInsets.all(16),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(64)),
@@ -85,23 +117,48 @@ class Signin extends StatelessWidget {
                   const SizedBox(
                     height: 16,
                   ),
-                  FilledButton(
-                    onPressed: () {},
-                    child: Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 8),
-                      child: const Text(
-                        textAlign: TextAlign.center,
-                        "Sign in",
-                        style: TextStyle(fontSize: 20),
+                  Consumer<Userprovider>(
+                    builder: (context, value, child) => FilledButton(
+                      onPressed: () {
+                        if (!value.login(
+                          _emailController.text,
+                          _passwordController.text,
+                        )) {
+                          setState(() {
+                            setError("Invalid email or password!");
+                          });
+                        } else {
+                          setState(() {
+                            setError("");
+                            Navigator.pushNamed(context, Profile.id);
+                          });
+                        }
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 8),
+                        child: const Text(
+                          textAlign: TextAlign.center,
+                          "Sign in",
+                          style: TextStyle(fontSize: 20),
+                        ),
                       ),
+                    ),
+                  ),
+                  Text(
+                    error,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      color: Colors.redAccent,
                     ),
                   )
                 ],
               ),
             ),
-            const SizedBox(height: 64,),
+            const SizedBox(
+              height: 64,
+            ),
             TextButton(
               onPressed: () {
                 Navigator.pushNamed(context, Signup.id);
