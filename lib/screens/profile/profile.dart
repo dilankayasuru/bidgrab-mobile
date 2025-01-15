@@ -1,4 +1,5 @@
-import 'package:bidgrab/models/UserProvider.dart';
+import 'package:bidgrab/controllers/auth_controller.dart';
+import 'package:bidgrab/providers/authProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +12,6 @@ class Profile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // title: searchOpened ? const SearchBar() : const Text("Products"),
         title: const Text("Profile"),
         leading: IconButton(
           onPressed: () {
@@ -22,24 +22,29 @@ class Profile extends StatelessWidget {
           ),
         ),
         actions: [
-          Consumer<Userprovider>(
-            builder: (context, value, child) => IconButton(
-              onPressed: () {
-                value.loggedIn = false;
+          IconButton(
+            onPressed: () async {
+              try {
+                await Auth.logout();
                 Navigator.pushNamed(context, '/');
-              },
-              icon: const Icon(
-                Icons.logout,
-              ),
+                Provider.of<AuthProvider>(context, listen: false).logOut();
+              } catch (error) {
+                print(error);
+              }
+            },
+            icon: const Icon(
+              Icons.logout,
             ),
-          )
+          ),
         ],
       ),
       body: SafeArea(
           child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: SizedBox(
-          child: Column(
+        child: SizedBox(child:
+            Consumer<AuthProvider>(builder: (context, authProvider, child) {
+          final user = authProvider.getUser();
+          return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const Text(
@@ -51,24 +56,29 @@ class Profile extends StatelessWidget {
               const SizedBox(
                 height: 16,
               ),
-              const CircleAvatar(
-                backgroundImage: AssetImage('images/profile/profile.jpg'),
+              CircleAvatar(
+                backgroundImage: NetworkImage(user.profilePic ?? ""),
                 maxRadius: 56,
               ),
-              const Text(
-                "Dilanka Yasuru",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              Text(
+                user.name ?? "",
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
               ),
-              const Text(
-                "@dilanka",
-                style: TextStyle(
+              Text(
+                user.email ?? "",
+                style: const TextStyle(
                   fontSize: 20,
                   color: Colors.grey,
                 ),
               ),
               Center(
                 child: Container(
-                  constraints: BoxConstraints(maxWidth: MediaQuery.of(context).orientation == Orientation.portrait ? double.infinity : 320),
+                  constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).orientation ==
+                              Orientation.portrait
+                          ? double.infinity
+                          : 320),
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,10 +94,9 @@ class Profile extends StatelessWidget {
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.all(16),
                           border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(16)),
+                            borderRadius: BorderRadius.all(Radius.circular(16)),
                           ),
-                          label: Text("First name"),
+                          label: Text("Name"),
                         ),
                       ),
                       const SizedBox(
@@ -97,21 +106,7 @@ class Profile extends StatelessWidget {
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.all(16),
                           border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(16)),
-                          ),
-                          label: Text("Last name"),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      const TextField(
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(16),
-                          border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(16)),
+                            borderRadius: BorderRadius.all(Radius.circular(16)),
                           ),
                           label: Text("Email"),
                         ),
@@ -189,8 +184,8 @@ class Profile extends StatelessWidget {
                 ),
               )
             ],
-          ),
-        ),
+          );
+        })),
       )),
     );
   }

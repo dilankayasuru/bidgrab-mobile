@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class Userprovider with ChangeNotifier {
   // Private fields to store user information.
-  String _fistName = "Dilanka";
-  String _lastName = "Yasuru";
+  final String _fistName = "Dilanka";
+  final String _lastName = "Yasuru";
   bool _loggedIn = false;
 
   // Getters

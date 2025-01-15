@@ -1,5 +1,5 @@
 import 'package:bidgrab/models/data.dart';
-import 'package:bidgrab/models/theme.dart';
+import 'package:bidgrab/providers/theme.dart';
 import 'package:bidgrab/screens/home/components/HomeCategories.dart';
 import 'package:bidgrab/screens/home/components/HomeHero.dart';
 import 'package:bidgrab/screens/home/components/RecentAuctions.dart';

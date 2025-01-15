@@ -177,7 +177,7 @@ class Productview extends StatelessWidget {
                           height: 8,
                         ),
                         Container(
-                          constraints: BoxConstraints(maxWidth: 320),
+                          constraints: const BoxConstraints(maxWidth: 320),
                           child: Text(
                             args.description,
                             style: const TextStyle(

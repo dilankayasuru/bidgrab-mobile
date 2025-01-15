@@ -1,5 +1,5 @@
-import 'package:bidgrab/models/UserProvider.dart';
-import 'package:bidgrab/models/theme.dart';
+import 'package:bidgrab/providers/authProvider.dart';
+import 'package:bidgrab/providers/theme.dart';
 import 'package:bidgrab/screens/mainLayout.dart';
 import 'package:bidgrab/screens/products/productView.dart';
 import 'package:bidgrab/screens/profile/profile.dart';
@@ -24,9 +24,8 @@ void main() {
                 isSystemDarkMode, // Initialize with system dark mode setting.
           ),
         ),
-        // ChangeNotifierProvider for Userprovider to manage user login state.
         ChangeNotifierProvider(
-          create: (context) => Userprovider(),
+          create: (context) => AuthProvider(),
         ),
       ],
       child: const MyApp(),
@@ -51,11 +50,16 @@ class MyApp extends StatelessWidget {
         initialRoute: '/',
         // Define the routes for the application.
         routes: {
-          '/': (context) => const MainLayOut(), // Main layout route (Home page).
-          Signup.id: (context) => const Signup(), // Signup screen route.
-          Signin.id: (context) => const Signin(), // Signin screen route.
-          Productview.id: (context) => const Productview(), // Product view screen route.
-          Profile.id: (context) => const Profile(), // Profile screen route.
+          '/': (context) => const MainLayOut(),
+          // Main layout route (Home page).
+          Signup.id: (context) => const Signup(),
+          // Signup screen route.
+          Signin.id: (context) => const Signin(),
+          // Signin screen route.
+          Productview.id: (context) => const Productview(),
+          // Product view screen route.
+          Profile.id: (context) => const Profile(),
+          // Profile screen route.
         },
         // Set the theme mode based on the current theme.
         themeMode: value.darkModeEnabled ? ThemeMode.dark : ThemeMode.light,

@@ -1,5 +1,5 @@
 import 'package:bidgrab/models/category.dart';
-import 'package:bidgrab/models/theme.dart';
+import 'package:bidgrab/providers/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

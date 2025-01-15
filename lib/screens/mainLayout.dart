@@ -1,4 +1,4 @@
-import 'package:bidgrab/models/UserProvider.dart';
+import 'package:bidgrab/providers/authProvider.dart';
 import 'package:bidgrab/screens/Onboarding/Onboarding.dart';
 import 'package:bidgrab/screens/categories/categories.dart';
 import 'package:bidgrab/screens/home/home.dart';
@@ -71,9 +71,9 @@ class _MainLayOutState extends State<MainLayOut> {
             const Home(),
             const Products(),
             const Categories(),
-            Consumer<Userprovider>(
+            Consumer<AuthProvider>(
               builder: (context, value, child) =>
-                  value.loggedIn ? const Profile() : const Onboarding(),
+                  value.authenticated() ? const Profile() : const Onboarding(),
             ),
           ],
         ));

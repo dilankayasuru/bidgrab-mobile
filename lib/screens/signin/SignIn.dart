@@ -1,9 +1,13 @@
 import 'package:bidgrab/components/CurvedBottomContainer.dart';
-import 'package:bidgrab/models/UserProvider.dart';
-import 'package:bidgrab/models/theme.dart';
+import 'package:bidgrab/controllers/auth_controller.dart';
+import 'package:bidgrab/models/user.dart';
+import 'package:bidgrab/providers/theme.dart';
 import 'package:bidgrab/screens/signup/SignUp.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+
+import '../../providers/authProvider.dart';
 
 class Signin extends StatefulWidget {
   const Signin({super.key});
@@ -16,9 +20,33 @@ class Signin extends StatefulWidget {
 
 class _SigninState extends State<Signin> {
   String error = "";
+  bool isSubmitting = false;
 
   void setError(String message) {
-    error = message;
+    setState(() {
+      error = message;
+    });
+  }
+
+  void handleLogin() async {
+    setState(() {
+      isSubmitting = true;
+    });
+    try {
+
+      User user = await Auth.login(_emailController.text, _passwordController.text);
+      Provider.of<AuthProvider>(context, listen: false).setUser(user);
+      Navigator.pushNamed(context, "/");
+      setState(() {
+        isSubmitting = false;
+      });
+      return;
+    } catch (error) {
+      setError(error.toString());
+      setState(() {
+        isSubmitting = false;
+      });
+    }
   }
 
   final _emailController = TextEditingController();
@@ -131,38 +159,34 @@ class _SigninState extends State<Signin> {
                   const SizedBox(
                     height: 16,
                   ),
-                  // Consumer widget to listen to changes in Userprovider.
-                  Consumer<Userprovider>(
-                    builder: (context, value, child) => FilledButton(
-                      onPressed: () {
-                        // Attempt to log in with the provided email and password.
-                        if (!value.login(
-                          _emailController.text,
-                          _passwordController.text,
-                        )) {
-                          // If login fails, set the error message.
-                          setState(() {
-                            setError("Invalid email or password!");
-                          });
-                        } else {
-                          // If login is successful, clear the error message
-                          // and navigate to the home page.
-                          setState(() {
-                            setError("");
-                            Navigator.pushNamed(context, '/');
-                          });
-                        }
-                      },
-                      // Button label.
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                        child: const Text(
-                          textAlign: TextAlign.center,
-                          "Sign in",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ),
+                  FilledButton(
+                    onPressed: isSubmitting ? () {} : () => handleLogin(),
+                    // Button label.
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 8),
+                      child: isSubmitting
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                  LoadingAnimationWidget.inkDrop(
+                                    color: Colors.white,
+                                    size: 26,
+                                  ),
+                                  const SizedBox(
+                                    width: 16,
+                                  ),
+                                  const Text(
+                                    "Submitting..",
+                                    style: TextStyle(fontSize: 20),
+                                  )
+                                ])
+                          : const Text(
+                              textAlign: TextAlign.center,
+                              "Sign in",
+                              style: TextStyle(fontSize: 20),
+                            ),
                     ),
                   ),
                   const SizedBox(
@@ -171,7 +195,7 @@ class _SigninState extends State<Signin> {
                   Text(
                     error,
                     style: const TextStyle(
-                      fontSize: 18,
+                      fontSize: 16,
                       color: Colors.redAccent,
                     ),
                   )
@@ -205,8 +229,9 @@ class _SigninState extends State<Signin> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color:
-                              value.darkModeEnabled ? Colors.white : Colors.black,
+                          color: value.darkModeEnabled
+                              ? Colors.white
+                              : Colors.black,
                         ),
                       ),
                     ),
