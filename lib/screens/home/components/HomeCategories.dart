@@ -1,27 +1,32 @@
-import 'package:bidgrab/models/category.dart';
+import 'package:bidgrab/controllers/category_controller.dart';
 import 'package:bidgrab/screens/home/components/CategoryTab.dart';
 import 'package:flutter/material.dart';
 import 'package:card_swiper/card_swiper.dart';
 
-class HomeCategories extends StatelessWidget {
-  // List of categories to be displayed.
-  final List<Category> categories;
+class HomeCategories extends StatefulWidget {
+  const HomeCategories({super.key});
 
-  // List to hold CategoryTab widgets.
-  final List<CategoryTab> items = [];
+  @override
+  State<HomeCategories> createState() => _HomeCategoriesState();
+}
 
-  // Constructor
-  HomeCategories({super.key, required this.categories});
+class _HomeCategoriesState extends State<HomeCategories> {
+  final CategoryController _categoryController = CategoryController();
+
+  @override
+  void initState() {
+    super.initState();
+    _categoryController.fetchCategories();
+  }
+
+  @override
+  void dispose() {
+    _categoryController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Loop to create CategoryTab widgets for the first 6 categories.
-    for (int i = 0; i < 6; i++) {
-      items.add(CategoryTab(
-        category: categories[i],
-      ));
-    }
-
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       child: Column(
@@ -36,17 +41,31 @@ class HomeCategories extends StatelessWidget {
           ),
           SizedBox(
             height: 164,
-            child: Swiper(
-              outer: false,
-              itemCount: categories.length,
-              itemBuilder: (BuildContext context, int index) {
-                return CategoryTab(category: categories[index]);
+            child: StreamBuilder(
+              stream: _categoryController.categories,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Center(child: Text('No category available'));
+                } else {
+                  final categories = snapshot.data!;
+                  return Swiper(
+                    outer: false,
+                    itemCount: categories.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return CategoryTab(category: categories[index]);
+                    },
+                    autoplay: true,
+                    fade: 0.25,
+                    autoplayDisableOnInteraction: true,
+                    control: null,
+                    viewportFraction: 0.5,
+                  );
+                }
               },
-              autoplay: true,
-              fade: 0.25,
-              autoplayDisableOnInteraction: true,
-              control: null,
-              viewportFraction: 0.5,
             ),
           ),
         ],

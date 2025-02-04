@@ -1,13 +1,14 @@
+import 'package:bidgrab/models/auction.dart';
 import 'package:bidgrab/models/item.dart';
 import 'package:bidgrab/providers/theme.dart';
 import 'package:bidgrab/screens/products/productView.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ItemCard extends StatelessWidget {
-  const ItemCard({super.key, required this.item});
+class AuctionCard extends StatelessWidget {
+  const AuctionCard({super.key, required this.auction});
 
-  final Item item;
+  final Auction auction;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,7 @@ class ItemCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Image(
-              image: AssetImage("images/items/${item.image}"),
+              image: NetworkImage(auction.images[0]),
               fit: BoxFit.fitWidth,
               height: 145,
             ),
@@ -47,13 +48,15 @@ class ItemCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Text(
-                        item.title,
+                        auction.title.length > 30
+                            ? '${auction.title.substring(0, 30)}...'
+                            : auction.title,
                         style: const TextStyle(
                           fontSize: 24,
                         ),
                       ),
                       Text(
-                        item.category,
+                        '${auction.categoryName}',
                         style:
                             const TextStyle(color: Colors.grey, fontSize: 16),
                       )
@@ -85,7 +88,7 @@ class ItemCard extends StatelessWidget {
                                         ? Colors.white10
                                         : Colors.blue.shade100)),
                             child: Text(
-                              "Rs. ${item.lastBid}",
+                              "Rs. ${auction.current_price}",
                               style: const TextStyle(fontSize: 16),
                             ),
                           ),
@@ -111,7 +114,8 @@ class ItemCard extends StatelessWidget {
                                         ? Colors.white10
                                         : Colors.blue.shade100)),
                             child: Text(
-                              "${item.endingIn} left",
+                              // TODO ending
+                              " left",
                               style: const TextStyle(fontSize: 16),
                             ),
                           ),
@@ -121,8 +125,8 @@ class ItemCard extends StatelessWidget {
                   ),
                   MediaQuery.of(context).orientation == Orientation.portrait
                       ? Padding(
-                        padding: const EdgeInsets.only(top: 8),
-                        child: Row(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               ElevatedButton(
@@ -130,7 +134,7 @@ class ItemCard extends StatelessWidget {
                                   Navigator.pushNamed(
                                     context,
                                     ProductView.id,
-                                    arguments: item,
+                                    arguments: auction.id,
                                   );
                                 },
                                 child: const Text(
@@ -147,7 +151,7 @@ class ItemCard extends StatelessWidget {
                               ),
                             ],
                           ),
-                      )
+                        )
                       : Container(),
                 ],
               ),

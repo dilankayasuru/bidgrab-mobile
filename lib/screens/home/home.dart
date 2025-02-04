@@ -2,7 +2,7 @@ import 'package:bidgrab/models/data.dart';
 import 'package:bidgrab/providers/theme.dart';
 import 'package:bidgrab/screens/home/components/HomeCategories.dart';
 import 'package:bidgrab/screens/home/components/HomeHero.dart';
-import 'package:bidgrab/screens/home/components/TrendingAuctions.dart';
+import 'package:bidgrab/screens/home/components/AuctionsSlider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -52,11 +52,9 @@ class Home extends StatelessWidget {
             SafeArea(
               child: Column(
                 children: [
-                  HomeCategories(
-                    categories: DataModel().categories,
-                  ),
-                  TrendingAuctions(
-                    items: DataModel().items,
+                  const HomeCategories(),
+                  AuctionsSlider(
+                    url: 'trending',
                     child: Container(
                       padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                       child: const Text(

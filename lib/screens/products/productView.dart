@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../controllers/auction_controller.dart';
 import '../../models/data.dart';
-import '../home/components/TrendingAuctions.dart';
+import '../home/components/AuctionsSlider.dart';
 
 class ProductView extends StatefulWidget {
   const ProductView({super.key});
@@ -272,8 +272,8 @@ class _ProductViewState extends State<ProductView> {
                                 const SizedBox(
                                   height: 32,
                                 ),
-                                TrendingAuctions(
-                                  items: DataModel().items,
+                                AuctionsSlider(
+                                  url: 'categories/${auction?.category_id}',
                                   child: const Text(
                                     'You might also like',
                                     style: TextStyle(

@@ -20,7 +20,7 @@ class _ProductsState extends State<Products> {
   @override
   void initState() {
     super.initState();
-    _auctionController.fetchAuctions();
+    _auctionController.fetchAuctions('auctions');
   }
 
   @override

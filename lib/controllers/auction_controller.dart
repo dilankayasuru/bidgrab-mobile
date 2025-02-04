@@ -10,9 +10,8 @@ class AuctionController {
 
   Stream<List<Auction>> get auctions => _auctionController.stream;
 
-  Future<void> fetchAuctions() async {
-    final response =
-        await http.get(Uri.parse('${Config.APP_URL}/api/auctions'));
+  Future<void> fetchAuctions(String url) async {
+    final response = await http.get(Uri.parse('${Config.APP_URL}/api/$url'));
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);

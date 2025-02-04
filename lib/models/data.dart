@@ -27,7 +27,8 @@ class DataModel {
       lastBid: 250000.00,
       endingIn: '3d 5h',
       image: 'laptop.jpg',
-      description: "This ultra-lightweight MacBook Air is powered by the Apple M2 chip, offering a significant performance boost while maintaining exceptional power efficiency. With a stunning 13.6-inch Retina display and a fanless design for silent operation, it’s perfect for both creative professionals and casual users who value portability and power",
+      description:
+          "This ultra-lightweight MacBook Air is powered by the Apple M2 chip, offering a significant performance boost while maintaining exceptional power efficiency. With a stunning 13.6-inch Retina display and a fanless design for silent operation, it’s perfect for both creative professionals and casual users who value portability and power",
     ),
     Item(
       title: 'Sport shoes',
@@ -35,7 +36,8 @@ class DataModel {
       lastBid: 7500.00,
       endingIn: '1d 3h',
       image: 'shoe.jpg',
-      description: "High-performance sport shoes designed for athletes and fitness enthusiasts. Made from breathable material, these shoes provide excellent support and traction, making them ideal for running, training, or casual wear. The ergonomic design ensures comfort, while the durable sole is built to withstand rigorous activity.",
+      description:
+          "High-performance sport shoes designed for athletes and fitness enthusiasts. Made from breathable material, these shoes provide excellent support and traction, making them ideal for running, training, or casual wear. The ergonomic design ensures comfort, while the durable sole is built to withstand rigorous activity.",
     ),
     Item(
       title: 'Over size t-shirt',
@@ -43,58 +45,65 @@ class DataModel {
       lastBid: 1540.00,
       endingIn: '1h 2m',
       image: 'tshirt.jpg',
-      description: "Trendy and comfortable oversized T-shirt crafted from soft, high-quality cotton. Perfect for a relaxed, casual look, it features a loose fit that pairs well with jeans, shorts, or leggings. Available in various colors, this T-shirt is a versatile wardrobe essential that blends style with comfort.",
+      description:
+          "Trendy and comfortable oversized T-shirt crafted from soft, high-quality cotton. Perfect for a relaxed, casual look, it features a loose fit that pairs well with jeans, shorts, or leggings. Available in various colors, this T-shirt is a versatile wardrobe essential that blends style with comfort.",
     ),
   ];
 
   List<Category> categories = const [
     Category(
-      image: "electronic.png",
-      name: "Electronics",
-    ),
+        image: "electronic.png",
+        name: "Electronics",
+        id: 'asdd',
+        description: 'dummy'),
     Category(
-      image: "jewellery.png",
-      name: "Jewelry & Accessories",
-    ),
+        image: "jewellery.png",
+        name: "Jewelry & Accessories",
+        id: 'asdd',
+        description: 'dummy'),
     Category(
-      image: "mobile.png",
-      name: "Mobile phones",
-    ),
+        image: "mobile.png",
+        name: "Mobile phones",
+        id: 'asdd',
+        description: 'dummy'),
     Category(
-      image: "computer.png",
-      name: "Computers",
-    ),
+        image: "computer.png",
+        name: "Computers",
+        id: 'asdd',
+        description: 'dummy'),
     Category(
-      image: "home-appliances.png",
-      name: "Home Appliances",
-    ),
+        image: "home-appliances.png",
+        name: "Home Appliances",
+        id: 'asdd',
+        description: 'dummy'),
     Category(
-      image: "clothing.png",
-      name: "Clothing",
-    ),
+        image: "clothing.png",
+        name: "Clothing",
+        id: 'asdd',
+        description: 'dummy'),
     Category(
-      image: "furniture.png",
-      name: "Furniture",
-    ),
+        image: "furniture.png",
+        name: "Furniture",
+        id: 'asdd',
+        description: 'dummy'),
     Category(
-      image: "artwork.png",
-      name: "Artworks",
-    ),
+        image: "artwork.png",
+        name: "Artworks",
+        id: 'asdd',
+        description: 'dummy'),
     Category(
-      image: "shoe.png",
-      name: "Shoes",
-    ),
+        image: "shoe.png", name: "Shoes", id: 'asdd', description: 'dummy'),
     Category(
-      image: "automotive.png",
-      name: "Automotive",
-    ),
+        image: "automotive.png",
+        name: "Automotive",
+        id: 'asdd',
+        description: 'dummy'),
     Category(
-      image: "grocery.png",
-      name: "Grocery",
-    ),
+        image: "grocery.png",
+        name: "Grocery",
+        id: 'asdd',
+        description: 'dummy'),
     Category(
-      image: "other.png",
-      name: "Other",
-    ),
+        image: "other.png", name: "Other", id: 'asdd', description: 'dummy'),
   ];
 }
