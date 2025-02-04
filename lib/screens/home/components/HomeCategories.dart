@@ -1,6 +1,7 @@
 import 'package:bidgrab/models/category.dart';
 import 'package:bidgrab/screens/home/components/CategoryTab.dart';
 import 'package:flutter/material.dart';
+import 'package:card_swiper/card_swiper.dart';
 
 class HomeCategories extends StatelessWidget {
   // List of categories to be displayed.
@@ -27,30 +28,26 @@ class HomeCategories extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            "Popular Categories",
+            "Browse Categories",
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
           ),
           const SizedBox(
-            height: 16,
+            height: 32,
           ),
-          // GridView to display the categories in a grid format.
-          GridView.count(
-            // Number of columns based on the device orientation.
-            crossAxisCount:
-                MediaQuery.of(context).orientation == Orientation.portrait
-                    ? 2
-                    : 4,
-            // Shrink the grid to fit its content.
-            shrinkWrap: true,
-            // Disable scrolling
-            physics: const NeverScrollableScrollPhysics(),
-            // Spacing between grid items.
-            mainAxisSpacing: 16,
-            crossAxisSpacing: 8,
-            // Aspect ratio for the grid items.
-            childAspectRatio: 3 / 1,
-            // Add the CategoryTab widgets to the grid.
-            children: items,
+          SizedBox(
+            height: 164,
+            child: Swiper(
+              outer: false,
+              itemCount: categories.length,
+              itemBuilder: (BuildContext context, int index) {
+                return CategoryTab(category: categories[index]);
+              },
+              autoplay: true,
+              fade: 0.25,
+              autoplayDisableOnInteraction: true,
+              control: null,
+              viewportFraction: 0.5,
+            ),
           ),
         ],
       ),

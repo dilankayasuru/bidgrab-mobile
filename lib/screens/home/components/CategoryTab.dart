@@ -12,31 +12,36 @@ class CategoryTab extends StatelessWidget {
   Widget build(BuildContext context) {
     // Use Consumer to listen to changes in ThemeProvider.
     return Consumer<ThemeProvider>(
-      builder: (context, value, child) => ElevatedButton(
-        onPressed: () {},
-        // Create a row to display the category image and name.
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.fromLTRB(0, 4, 4, 4),
-              child: Image(
-                // Load the category image from assets.
-                image: AssetImage("images/categories/${category.image}"),
-                height: 44,
+      builder: (context, value, child) => Column(
+        children: [
+          InkWell(
+            onTap: () {
+              // TODO
+              print("Taped");
+            },
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  image: NetworkImage(
+                      'https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?q=80&w=1898&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
+                  fit: BoxFit.cover,
+                ),
               ),
+              height: 128,
+              width: 128,
             ),
-            // display the category name.
-            Flexible(
-              child: Text(
-                category.name,
-                // Style the text based on the current theme.
-                style: TextStyle(
-                    fontSize: 16,
-                    color: value.darkModeEnabled ? Colors.white : Colors.black),
-              ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            category.name,
+            style: TextStyle(
+              fontSize: 16,
+              color: value.darkModeEnabled ? Colors.white : Colors.black,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

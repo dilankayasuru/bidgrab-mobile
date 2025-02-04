@@ -129,7 +129,7 @@ class ItemCard extends StatelessWidget {
                                 onPressed: () {
                                   Navigator.pushNamed(
                                     context,
-                                    Productview.id,
+                                    ProductView.id,
                                     arguments: item,
                                   );
                                 },

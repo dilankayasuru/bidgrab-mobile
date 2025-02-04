@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import '../../../models/item.dart';
 
 // Display list of recent auctions.
-class RecentAuctions extends StatelessWidget {
-  const RecentAuctions({super.key, required this.items});
+class TrendingAuctions extends StatelessWidget {
+  const TrendingAuctions({super.key, required this.items, required this.child});
 
   // List of items to be displayed.
   final List<Item> items;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +21,7 @@ class RecentAuctions extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-          child: const Text(
-            "Recently added auctions",
-            style: TextStyle(fontSize: 24),
-          ),
-        ),
+        child,
         const SizedBox(
           height: 16,
         ),

@@ -9,6 +9,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class Auth {
   static const String app_url = Config.APP_URL;
+  static const storage = FlutterSecureStorage();
 
   static Future<User> login(String email, String password) async {
     if (email.isEmpty) {
@@ -30,7 +31,6 @@ class Auth {
     );
     var jsonResponse = jsonDecode(response.body);
     if (response.statusCode == 200) {
-      const storage = FlutterSecureStorage();
       var user = jsonResponse["user"];
       await storage.write(key: "name", value: user["name"]);
       await storage.write(key: "email", value: user["email"]);
@@ -47,7 +47,6 @@ class Auth {
   }
 
   static Future<void> logout() async {
-    const storage = FlutterSecureStorage();
     String? token = await storage.read(key: "auth_token");
     var response = await http.post(
       Uri.parse('$app_url/api/logout'),
@@ -82,13 +81,13 @@ class Auth {
     );
     var jsonResponse = jsonDecode(response.body);
     if (response.statusCode == 201) {
-      const storage = FlutterSecureStorage();
       var user = jsonResponse["user"];
       await storage.write(key: "name", value: user["name"]);
       await storage.write(key: "email", value: user["email"]);
       await storage.write(key: "profilePic", value: user["profile_photo_url"]);
       await storage.write(key: "auth_token", value: jsonResponse["token"]);
-      return User(user["name"], user["email"], user["profile_photo_url"], jsonResponse["token"]);
+      return User(user["name"], user["email"], user["profile_photo_url"],
+          jsonResponse["token"]);
     }
     String error;
     if (jsonResponse["errors"] != null &&
@@ -100,5 +99,28 @@ class Auth {
       error = "Unknown error!";
     }
     throw (error);
+  }
+
+  static Future<User> refresh(token) async {
+    var response = await http.get(
+      Uri.parse('$app_url/api/user'),
+      headers: {
+        "Content-Type": "application/json",
+        HttpHeaders.authorizationHeader: 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      var user = jsonDecode(response.body);
+      await storage.write(key: "name", value: user["name"]);
+      await storage.write(key: "email", value: user["email"]);
+      await storage.write(key: "profilePic", value: user["profile_photo_url"]);
+      return User(
+          user["name"], user["email"], user["profile_photo_url"], token);
+    }
+    await storage.delete(key: "name");
+    await storage.delete(key: "email");
+    await storage.delete(key: "auth_token");
+    await storage.delete(key: "profilePic");
+    return User.empty();
   }
 }

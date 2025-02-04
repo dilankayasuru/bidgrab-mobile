@@ -26,8 +26,8 @@ class Profile extends StatelessWidget {
             onPressed: () async {
               try {
                 await Auth.logout();
-                Navigator.pushNamed(context, '/');
                 Provider.of<AuthProvider>(context, listen: false).logOut();
+                Navigator.pushReplacementNamed(context, '/');
               } catch (error) {
                 print(error);
               }
@@ -44,6 +44,7 @@ class Profile extends StatelessWidget {
         child: SizedBox(child:
             Consumer<AuthProvider>(builder: (context, authProvider, child) {
           final user = authProvider.getUser();
+          print(user.profilePic);
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -56,9 +57,17 @@ class Profile extends StatelessWidget {
               const SizedBox(
                 height: 16,
               ),
-              CircleAvatar(
-                backgroundImage: NetworkImage(user.profilePic ?? ""),
-                maxRadius: 56,
+              // CircleAvatar(
+              //   backgroundImage: NetworkImage(user.profilePic as String),
+              //   maxRadius: 56,
+              // ),
+              ClipOval(
+                child: Image.network(
+                  user.profilePic as String,
+                  height: 100.0,
+                  width: 100.0,
+                  fit: BoxFit.cover,
+                ),
               ),
               Text(
                 user.name ?? "",

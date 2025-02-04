@@ -1,8 +1,9 @@
+import 'package:bidgrab/controllers/auction_controller.dart';
+import 'package:bidgrab/models/auction.dart';
 import 'package:bidgrab/models/category.dart';
 import 'package:bidgrab/models/data.dart';
 import 'package:bidgrab/screens/products/components/buttonsRow.dart';
 import 'package:bidgrab/screens/products/components/itemCard.dart';
-import 'package:bidgrab/models/item.dart';
 import 'package:flutter/material.dart';
 
 class Products extends StatefulWidget {
@@ -13,23 +14,24 @@ class Products extends StatefulWidget {
 }
 
 class _ProductsState extends State<Products> {
-  // List of items to be displayed
-  final List<Item> items = DataModel().items;
-
-  //  track if the search bar is opened
+  final AuctionController _auctionController = AuctionController();
   bool searchOpened = false;
 
   @override
-  Widget build(BuildContext context) {
-    // List of ItemCard widgets
-    List<ItemCard> itemsWidgets = [];
-    // List of categories to be displayed in the ButtonsRow
-    List<Category> categories = DataModel().categories;
+  void initState() {
+    super.initState();
+    _auctionController.fetchAuctions();
+  }
 
-    // Loop items and create ItemCard widgets
-    for (var item in items) {
-      itemsWidgets.add(ItemCard(item: item));
-    }
+  @override
+  void dispose() {
+    _auctionController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    List<Category> categories = DataModel().categories;
 
     return Scaffold(
       appBar: AppBar(
@@ -44,7 +46,6 @@ class _ProductsState extends State<Products> {
                 )
               : const Text("Products"),
         ),
-        //navigate back to the home screen
         leading: IconButton(
           onPressed: () {
             Navigator.pushNamed(context, '/');
@@ -71,29 +72,43 @@ class _ProductsState extends State<Products> {
       body: SafeArea(
         child: Column(
           children: [
-            // Display ButtonsRow only in portrait orientation
             MediaQuery.of(context).orientation == Orientation.portrait
                 ? ButtonsRow(categories: categories)
                 : Container(),
-            // Expanded widget to hold the GridView of items
             Expanded(
-              child: GridView.count(
-                // Number of columns in the grid based on screen width
-                crossAxisCount: MediaQuery.of(context).size.width < 700
-                    ? 2
-                    : (MediaQuery.of(context).size.width < 1400 ? 4 : 6),
-                // Aspect ratio of the grid items based on orientation
-                childAspectRatio:
-                    MediaQuery.of(context).orientation == Orientation.portrait
-                        ? 0.68
-                        : 0.85,
-                mainAxisSpacing: 8,
-                crossAxisSpacing: 8,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-                shrinkWrap: true,
-                // List of ItemCard widgets to be displayed in the grid
-                children: itemsWidgets,
+              child: StreamBuilder<List<Auction>>(
+                stream: _auctionController.auctions,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(
+                        child: const Text('No auctions available'));
+                  } else {
+                    final auctions = snapshot.data!;
+                    return GridView.count(
+                      crossAxisCount: MediaQuery.of(context).size.width < 700
+                          ? 2
+                          : (MediaQuery.of(context).size.width < 1400 ? 4 : 6),
+                      childAspectRatio: MediaQuery.of(context).orientation ==
+                              Orientation.portrait
+                          ? 0.68
+                          : 0.85,
+                      mainAxisSpacing: 16,
+                      crossAxisSpacing: 32,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 0),
+                      shrinkWrap: true,
+                      children: auctions.map((auction) {
+                        return ItemCard(
+                          item: auction,
+                        );
+                      }).toList(),
+                    );
+                  }
+                },
               ),
             ),
           ],

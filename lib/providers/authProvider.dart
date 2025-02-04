@@ -1,25 +1,25 @@
+import 'package:bidgrab/controllers/auth_controller.dart';
 import 'package:bidgrab/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class AuthProvider with ChangeNotifier {
+  User _user = User.empty();
 
-   User _user = User.empty();
+  AuthProvider() {
+    _refreshUser();
+  }
 
-   AuthProvider() {
-     _loadUserFromStorage();
-   }
-
-   Future<void> _loadUserFromStorage() async {
-     const storage = FlutterSecureStorage();
-     String? name = await storage.read(key: "name");
-     String? email = await storage.read(key: "email");
-     String? profilePic = await storage.read(key: "profilePic");
-     String? token = await storage.read(key: "auth_token");
-     User user = User(name ?? "", email ?? "", profilePic ?? "", token ?? "");
-     _user = user;
-     notifyListeners();
-   }
+  Future<void> _refreshUser() async {
+    const storage = FlutterSecureStorage();
+    String? token = await storage.read(key: "auth_token");
+    if (token != null) {
+      _user = await Auth.refresh(token);
+    } else {
+      _user = User.empty();
+    }
+    notifyListeners();
+  }
 
   void setUser(User user) {
     _user = user;

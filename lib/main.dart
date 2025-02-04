@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
           // Signup screen route.
           Signin.id: (context) => const Signin(),
           // Signin screen route.
-          Productview.id: (context) => const Productview(),
+          ProductView.id: (context) => const ProductView(),
           // Product view screen route.
           Profile.id: (context) => const Profile(),
           // Profile screen route.

@@ -2,7 +2,7 @@ import 'package:bidgrab/models/data.dart';
 import 'package:bidgrab/providers/theme.dart';
 import 'package:bidgrab/screens/home/components/HomeCategories.dart';
 import 'package:bidgrab/screens/home/components/HomeHero.dart';
-import 'package:bidgrab/screens/home/components/RecentAuctions.dart';
+import 'package:bidgrab/screens/home/components/TrendingAuctions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -55,8 +55,15 @@ class Home extends StatelessWidget {
                   HomeCategories(
                     categories: DataModel().categories,
                   ),
-                  RecentAuctions(
+                  TrendingAuctions(
                     items: DataModel().items,
+                    child: Container(
+                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                      child: const Text(
+                        "Trending auctions",
+                        style: TextStyle(fontSize: 24),
+                      ),
+                    ),
                   ),
                 ],
               ),
