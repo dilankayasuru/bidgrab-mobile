@@ -1,38 +1,19 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:bidgrab/config.dart';
+import 'package:flutter/foundation.dart' as foundation;
 import 'package:http/http.dart' as http;
-import '../models/category.dart';
+import 'package:bidgrab/models/category.dart';
 
 class CategoryController {
-  final StreamController<List<Category>> _categoryController =
-      StreamController<List<Category>>();
-
-  Stream<List<Category>> get categories => _categoryController.stream;
-
-  Future<void> fetchCategories() async {
-    final response =
-        await http.get(Uri.parse('${Config.APP_URL}/api/categories'));
-
-    if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
-      List<Category> categories = (data as List)
-          .map<Category>((category) => Category(
-                id: category['id'] ?? '',
-                name: category['name'] ?? '',
-                description: category["description"],
-                image: category['image'] ?? '',
-              ))
-          .toList();
-      if (!_categoryController.isClosed) {
-        _categoryController.add(categories);
-      }
-    } else {
-      throw ('Failed to load categories');
-    }
+  static Future<List<Category>> fetchCategories(http.Client client, url) async {
+    final response = await client.get(Uri.parse('${Config.APP_URL}/api/$url'));
+    return foundation.compute(_parseCategories, response.body);
   }
 
-  void dispose() {
-    _categoryController.close();
+  static List<Category> _parseCategories(String responseBody) {
+    final parsed =
+        (jsonDecode(responseBody) as List).cast<Map<String, dynamic>>();
+    return parsed.map<Category>((json) => Category.fromJson(json)).toList();
   }
 }

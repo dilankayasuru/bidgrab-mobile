@@ -14,7 +14,7 @@ class AuctionController {
     final response = await http.get(Uri.parse('${Config.APP_URL}/api/$url'));
 
     if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
+      var data =  jsonDecode(response.body);
       List<Auction> auctions = (data as List)
           .map<Auction>((auction) => Auction(
                 title: auction['title'] ?? '',
