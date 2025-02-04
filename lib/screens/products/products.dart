@@ -5,6 +5,7 @@ import 'package:bidgrab/models/data.dart';
 import 'package:bidgrab/screens/products/components/buttonsRow.dart';
 import 'package:bidgrab/screens/products/components/itemCard.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class Products extends StatefulWidget {
   const Products({super.key});
@@ -14,19 +15,14 @@ class Products extends StatefulWidget {
 }
 
 class _ProductsState extends State<Products> {
-  final AuctionController _auctionController = AuctionController();
+  late Future<List<Auction>> futureAuctions;
   bool searchOpened = false;
 
   @override
   void initState() {
     super.initState();
-    _auctionController.fetchAuctions('auctions');
-  }
-
-  @override
-  void dispose() {
-    _auctionController.dispose();
-    super.dispose();
+    futureAuctions = AuctionController.fetchAuctions(http.Client(), 'auctions');
+    print(futureAuctions);
   }
 
   @override
@@ -76,17 +72,19 @@ class _ProductsState extends State<Products> {
                 ? ButtonsRow(categories: categories)
                 : Container(),
             Expanded(
-              child: StreamBuilder<List<Auction>>(
-                stream: _auctionController.auctions,
+              child: FutureBuilder<List<Auction>>(
+                future: futureAuctions,
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  if (snapshot.hasError) {
                     return const Center(
-                        child: const Text('No auctions available'));
-                  } else {
+                      child: Text('An error has occurred!'),
+                    );
+                  } else if (snapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (snapshot.hasData) {
                     final auctions = snapshot.data!;
                     return GridView.count(
                       crossAxisCount: MediaQuery.of(context).size.width < 700
@@ -103,14 +101,18 @@ class _ProductsState extends State<Products> {
                       shrinkWrap: true,
                       children: auctions.map((auction) {
                         return ItemCard(
-                          item: auction,
+                          auction: auction,
                         );
                       }).toList(),
+                    );
+                  } else {
+                    return const Center(
+                      child: Text('No data available'),
                     );
                   }
                 },
               ),
-            ),
+            )
           ],
         ),
       ),

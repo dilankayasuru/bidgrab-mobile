@@ -1,7 +1,8 @@
 import 'package:bidgrab/components/auctionCard.dart';
 import 'package:bidgrab/controllers/auction_controller.dart';
-import 'package:bidgrab/screens/products/components/itemCard.dart';
+import 'package:bidgrab/models/auction.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class AuctionsSlider extends StatefulWidget {
   const AuctionsSlider({super.key, required this.url, required this.child});
@@ -14,18 +15,12 @@ class AuctionsSlider extends StatefulWidget {
 }
 
 class _AuctionsSliderState extends State<AuctionsSlider> {
-  final AuctionController _auctionController = AuctionController();
+  late Future<List<Auction>> futureAuctions;
 
   @override
   void initState() {
     super.initState();
-    _auctionController.fetchAuctions(widget.url);
-  }
-
-  @override
-  void dispose() {
-    _auctionController.dispose();
-    super.dispose();
+    futureAuctions = AuctionController.fetchAuctions(http.Client(), widget.url);
   }
 
   @override
@@ -40,25 +35,27 @@ class _AuctionsSliderState extends State<AuctionsSlider> {
         SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(16, 0, 0, 16),
           scrollDirection: Axis.horizontal,
-          child: StreamBuilder(
-            stream: _auctionController.auctions,
+          child: FutureBuilder<List<Auction>>(
+            future: futureAuctions,
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
-              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Center(child: Text('No auction available'));
-              } else {
-                final auctions = snapshot.data ?? [];
+              if (snapshot.hasError) {
+                return const Center(
+                  child: Text('An error has occurred!'),
+                );
+              } else if (snapshot.hasData) {
+                List<Auction> auctions = snapshot.data!;
                 return Row(
                     children: auctions.map((auction) {
                   return AuctionCard(auction: auction);
                 }).toList());
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
               }
             },
           ),
-        )
+        ),
       ],
     );
   }

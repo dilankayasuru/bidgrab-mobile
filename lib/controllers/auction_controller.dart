@@ -3,94 +3,36 @@ import 'dart:convert';
 import 'package:bidgrab/config.dart';
 import 'package:http/http.dart' as http;
 import '../models/auction.dart';
+import 'package:flutter/foundation.dart' as foundation;
 
 class AuctionController {
-  final StreamController<List<Auction>> _auctionController =
-      StreamController<List<Auction>>();
-
-  Stream<List<Auction>> get auctions => _auctionController.stream;
-
-  Future<void> fetchAuctions(String url) async {
-    final response = await http.get(Uri.parse('${Config.APP_URL}/api/$url'));
-
-    if (response.statusCode == 200) {
-      var data =  jsonDecode(response.body);
-      List<Auction> auctions = (data as List)
-          .map<Auction>((auction) => Auction(
-                title: auction['title'] ?? '',
-                description: auction['description'] ?? '',
-                images: List<String>.from(auction['images'] ?? []),
-                category_id: auction['category_id'] ?? '',
-                condition: auction['condition'] ?? '',
-                duration:
-                    int.tryParse(auction['duration']?.toString() ?? '') ?? 0,
-                starting_date: DateTime.parse(auction['starting_date']),
-                starting_price:
-                    (auction['starting_price'] as num?)?.toDouble() ?? 0.0,
-                current_price:
-                    (auction['current_price'] as num?)?.toDouble() ?? 0.0,
-                bid_count: auction['bid_count'] as int? ?? 0,
-                specs: auction['specs'] is Map<String, dynamic>
-                    ? (auction['specs'] as Map<String, dynamic>)
-                    : <String, dynamic>{},
-                end_date: DateTime.parse(auction['end_date']),
-                status: auction['status'] ?? '',
-                updated_at: auction['updated_at'] != null
-                    ? DateTime.parse(auction['updated_at'])
-                    : null,
-                created_at: auction['created_at'] != null
-                    ? DateTime.parse(auction['created_at'])
-                    : null,
-                user_id: auction['user_id'],
-                highest_bid: auction['highest_bid'],
-                id: auction['id'],
-                categoryName: auction['categoryName'],
-              ))
-          .toList();
-      _auctionController.add(auctions);
-    } else {
-      throw ('Failed to load auctions');
-    }
+  static Future<List<Auction>> fetchAuctions(http.Client client, url) async {
+    final response = await client.get(Uri.parse('${Config.APP_URL}/api/$url'));
+    return foundation.compute(_parseAuctions, response.body);
   }
 
-  static Future<Auction> fetchAuctionById(String id) async {
+  static List<Auction> _parseAuctions(String responseBody) {
+    final parsedJson = jsonDecode(responseBody);
+
+    List<dynamic> auctionsList;
+    if (parsedJson is Map<String, dynamic>) {
+      auctionsList = parsedJson['auctions'] ?? [];
+    } else if (parsedJson is List) {
+      auctionsList = parsedJson;
+    } else {
+      throw Exception('Unexpected response format');
+    }
+
+    return auctionsList
+        .cast<Map<String, dynamic>>()
+        .map<Auction>((json) => Auction.fromJson(json))
+        .toList();
+  }
+
+  static Future<Auction> fetchAuction(http.Client client, id) async {
     final response =
-        await http.get(Uri.parse('${Config.APP_URL}/api/auctions/$id'));
-    if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
-      return Auction(
-        title: data['title'] ?? '',
-        description: data['description'] ?? '',
-        images: List<String>.from(data['images'] ?? []),
-        category_id: data['category_id'] ?? '',
-        condition: data['condition'] ?? '',
-        duration: int.tryParse(data['duration']?.toString() ?? '') ?? 0,
-        starting_date: DateTime.parse(data['starting_date']),
-        starting_price: (data['starting_price'] as num?)?.toDouble() ?? 0.0,
-        current_price: (data['current_price'] as num?)?.toDouble() ?? 0.0,
-        bid_count: data['bid_count'] as int? ?? 0,
-        specs: data['specs'] is Map<String, dynamic>
-            ? (data['specs'] as Map<String, dynamic>)
-            : <String, dynamic>{},
-        end_date: DateTime.parse(data['end_date']),
-        status: data['status'] ?? '',
-        updated_at: data['updated_at'] != null
-            ? DateTime.parse(data['updated_at'])
-            : null,
-        created_at: data['created_at'] != null
-            ? DateTime.parse(data['created_at'])
-            : null,
-        user_id: data['user_id'],
-        highest_bid: data['highest_bid'],
-        id: data['id'],
-        categoryName: data['categoryName'],
-      );
-    } else {
-      throw ('Failed to load auction');
-    }
-  }
-
-  void dispose() {
-    _auctionController.close();
+        await client.get(Uri.parse('${Config.APP_URL}/api/auctions/$id'));
+    final auctionDecode = jsonDecode(response.body) as Map<String, dynamic>;
+    return Auction.fromJson(auctionDecode);
   }
 }

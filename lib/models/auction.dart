@@ -1,65 +1,73 @@
+import 'dart:convert';
+
+import 'package:bidgrab/models/specs.dart';
+
 class Auction {
+  final String? title;
+  final String? description;
+  final List<String>? images;
+  final String? categoryId;
+  final String? condition;
+  final String? duration;
+  final String? startingDate;
+  final int? startingPrice;
+  final int? currentPrice;
+  final int? bidCount;
+  final Specs? specs;
+  final String? endDate;
+  final String? status;
+  final String? updatedAt;
+  final String? createdAt;
+  final String? userId;
+  final String? highestBid;
   final String? id;
-  final String title;
-  final List<String> images;
-  final String category_id;
-  final String description;
-  final String condition;
-  final int duration;
-  final DateTime starting_date;
-  final double starting_price;
-  final double current_price;
-  final int bid_count;
-  final Map<String, dynamic>? specs;
-  final DateTime end_date;
-  final String status;
-  final DateTime? updated_at;
-  final DateTime? created_at;
-  final String? user_id;
-  final String? highest_bid;
   final String? categoryName;
 
-  Auction({
-    required this.id,
-    required this.title,
-    required this.description,
-    required this.images,
-    required this.category_id,
-    required this.condition,
-    required this.duration,
-    required this.starting_date,
-    required this.starting_price,
-    required this.current_price,
-    required this.bid_count,
-    required this.specs,
-    required this.end_date,
-    required this.status,
-    required this.updated_at,
-    required this.created_at,
-    required this.user_id,
-    required this.highest_bid,
-    required this.categoryName,
-  });
-
-  Auction.create({
+  const Auction({
+    this.title,
+    this.description,
+    this.images,
+    this.categoryId,
+    this.condition,
+    this.duration,
+    this.startingDate,
+    this.startingPrice,
+    this.currentPrice,
+    this.bidCount,
+    this.specs,
+    this.endDate,
+    this.status,
+    this.updatedAt,
+    this.createdAt,
+    this.userId,
+    this.highestBid,
     this.id,
-    required this.title,
-    required this.description,
-    required this.images,
-    required this.category_id,
-    required this.condition,
-    required this.duration,
-    required this.starting_date,
-    required this.starting_price,
-    required this.current_price,
-    required this.bid_count,
-    required this.specs,
-    required this.end_date,
-    required this.status,
-    this.updated_at,
-    this.created_at,
-    this.user_id,
-    this.highest_bid,
     this.categoryName,
   });
+
+  factory Auction.fromJson(Map<String, dynamic> json) {
+    return Auction(
+      title: json['title'] as String?,
+      description: json['description'] as String?,
+      images: (json['images'] as List<dynamic>?)?.cast<String>(),
+      categoryId: json['category_id'] as String?,
+      condition: json['condition'] as String?,
+      duration: json['duration'] as String?,
+      startingDate: json['starting_date'] as String?,
+      startingPrice: json['starting_price'] as int?,
+      currentPrice: json['current_price'] as int?,
+      bidCount: json['bid_count'] as int?,
+      specs: json['specs'] is Map<String, dynamic>
+          ? Specs.fromJson(json['specs'] as Map<String, dynamic>)
+          : null,
+      endDate: json['end_date'] as String?,
+      status: json['status'] as String?,
+      updatedAt: json['updated_at'] as String?,
+      createdAt: json['created_at'] as String?,
+      userId: json['user_id'] as String?,
+      highestBid: json['highest_bid'] as String?,
+      id: json['id'] as String?,
+      categoryName: json['categoryName'] as String?,
+    );
+  }
 }

@@ -1,5 +1,4 @@
 import 'package:bidgrab/models/auction.dart';
-import 'package:bidgrab/models/item.dart';
 import 'package:bidgrab/providers/theme.dart';
 import 'package:bidgrab/screens/products/productView.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +34,7 @@ class AuctionCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Image(
-              image: NetworkImage(auction.images[0]),
+              image: NetworkImage(auction.images?[0] ?? ''),
               fit: BoxFit.fitWidth,
               height: 145,
             ),
@@ -48,15 +47,15 @@ class AuctionCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Text(
-                        auction.title.length > 30
-                            ? '${auction.title.substring(0, 30)}...'
-                            : auction.title,
+                        auction.title!.length > 30
+                            ? '${auction.title?.substring(0, 30)}...'
+                            : auction.title ?? "No title",
                         style: const TextStyle(
                           fontSize: 24,
                         ),
                       ),
                       Text(
-                        '${auction.categoryName}',
+                        auction.categoryName ?? "No category",
                         style:
                             const TextStyle(color: Colors.grey, fontSize: 16),
                       )
@@ -88,7 +87,7 @@ class AuctionCard extends StatelessWidget {
                                         ? Colors.white10
                                         : Colors.blue.shade100)),
                             child: Text(
-                              "Rs. ${auction.current_price}",
+                              "Rs. ${auction.currentPrice ?? ""}",
                               style: const TextStyle(fontSize: 16),
                             ),
                           ),
