@@ -109,7 +109,10 @@ class Auth {
         HttpHeaders.authorizationHeader: 'Bearer $token',
       },
     );
-    if (response.statusCode == 200) {
+    var contentType =
+        response.headers['content-type'] ?? response.headers['Content-Type'];
+
+    if (response.statusCode == 200 && contentType == "application/json") {
       var user = jsonDecode(response.body);
       await storage.write(key: "name", value: user["name"]);
       await storage.write(key: "email", value: user["email"]);

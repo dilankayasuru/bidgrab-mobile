@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:bidgrab/models/auction.dart';
 import 'package:bidgrab/screens/products/components/countdown.dart';
 import 'package:bidgrab/screens/products/products.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:lottie/lottie.dart';
 import '../../controllers/auction_controller.dart';
 import '../home/components/AuctionsSlider.dart';
 import 'package:intl/intl.dart';
@@ -20,11 +23,57 @@ class ProductView extends StatefulWidget {
 class _ProductViewState extends State<ProductView> {
   late Future<Auction> futureAuction;
 
+  String? error;
+
+  final _bidAmountController = TextEditingController();
+
   @override
   void didChangeDependencies() {
     final auctionId = ModalRoute.of(context)!.settings.arguments as String;
     futureAuction = AuctionController.fetchAuction(http.Client(), auctionId);
     super.didChangeDependencies();
+  }
+
+  void _placeBid(Auction auction) async {
+    await AuctionController.placeBid(
+        auction.id ?? "", _bidAmountController.text)
+        .then((response) {
+      Navigator.pop(context);
+      var decoded = jsonDecode(response.body);
+      if (response.statusCode == 201) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text(decoded["message"]),
+            content: Lottie.asset("images/lottie/highfive.json"),
+            actions: [
+              FilledButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text("Done"),
+              )
+            ],
+          ),
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text(decoded["message"]),
+            content: Lottie.asset("images/lottie/robot.json"),
+            actions: [
+              FilledButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text("Okay"),
+              )
+            ],
+          ),
+        );
+      }
+    });
   }
 
   @override
@@ -452,7 +501,41 @@ class _ProductViewState extends State<ProductView> {
               width: double.infinity,
               padding: const EdgeInsets.all(16),
               child: FilledButton(
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text("Place bid"),
+                      content: TextField(
+                        keyboardType:
+                        const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
+                        controller: _bidAmountController,
+                        decoration: InputDecoration(
+                          contentPadding:
+                          const EdgeInsets.all(16),
+                          border: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(16)),
+                          ),
+                          label: const Text("Amount"),
+                          errorText: error,
+                          helperText:
+                          "Must be grater than Rs. ${auction.currentPrice}.",
+                        ),
+                      ),
+                      actions: [
+                        FilledButton(
+                          onPressed: () {
+                            _placeBid(auction);
+                          },
+                          child: const Text("Place bid"),
+                        )
+                      ],
+                    ),
+                  );
+                },
                 style: ButtonStyle(
                   padding: MaterialStateProperty.all(
                     const EdgeInsets.symmetric(

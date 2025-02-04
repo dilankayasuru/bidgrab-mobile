@@ -96,8 +96,7 @@ class _ProductsState extends State<Products> {
                       return Center(
                         child: Column(
                           children: [
-                            Lottie.network(
-                                "https://d1jj76g3lut4fe.cloudfront.net/saved_colors/109057/MQEpgeoCSFammLqd.json"),
+                            Lottie.asset("images/lottie/empty.json"),
                             const Text("No auction found!"),
                           ],
                         ),
