@@ -2,6 +2,7 @@ import 'package:bidgrab/models/category.dart';
 import 'package:bidgrab/providers/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:bidgrab/screens/products/products.dart';
 
 class CategoryTab extends StatelessWidget {
   const CategoryTab({super.key, required this.category});
@@ -16,8 +17,11 @@ class CategoryTab extends StatelessWidget {
         children: [
           InkWell(
             onTap: () {
-              // TODO
-              print("Taped");
+              Navigator.pushNamed(
+                context,
+                Products.id,
+                arguments: 'categories/${category.id}',
+              );
             },
             borderRadius: BorderRadius.circular(128),
             child: Container(

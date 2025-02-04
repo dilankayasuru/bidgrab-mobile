@@ -1,16 +1,16 @@
 import 'package:bidgrab/controllers/auction_controller.dart';
 import 'package:bidgrab/models/auction.dart';
-import 'package:bidgrab/models/category.dart';
-import 'package:bidgrab/models/data.dart';
-import 'package:bidgrab/screens/products/components/buttonsRow.dart';
 import 'package:bidgrab/screens/products/components/itemCard.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:lottie/lottie.dart';
 
 class Products extends StatefulWidget {
-  const Products({super.key});
+  final String url;
 
-  static String id = "";
+  const Products({super.key, this.url = "auctions"});
+
+  static String id = "/products";
 
   @override
   State<Products> createState() => _ProductsState();
@@ -19,30 +19,41 @@ class Products extends StatefulWidget {
 class _ProductsState extends State<Products> {
   late Future<List<Auction>> futureAuctions;
   bool searchOpened = false;
+  String heading = "Auctions";
 
   @override
   void initState() {
     super.initState();
-    futureAuctions = AuctionController.fetchAuctions(http.Client(), 'auctions');
-    print(futureAuctions);
+    futureAuctions = AuctionController.fetchAuctions(http.Client(), widget.url);
+    if (widget.url.contains('categories')) {
+      heading = "Browse categories";
+    } else if (widget.url == "auctions") {
+      heading = "Auctions";
+    } else {
+      heading = "Search results";
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    List<Category> categories = DataModel().categories;
-
     return Scaffold(
       appBar: AppBar(
         title: Container(
           child: searchOpened
-              ? const SizedBox(
+              ? SizedBox(
                   height: 44,
-                  width: 240,
                   child: SearchBar(
                     hintText: "Search items...",
+                    onSubmitted: (String value) {
+                      Navigator.pushNamed(
+                        context,
+                        Products.id,
+                        arguments: 'search/?keyword=$value',
+                      );
+                    },
                   ),
                 )
-              : const Text("Auctions"),
+              : Text(heading),
         ),
         leading: IconButton(
           onPressed: () {
@@ -60,19 +71,12 @@ class _ProductsState extends State<Products> {
               });
             },
             icon: const Icon(Icons.search),
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.sort),
           )
         ],
       ),
       body: SafeArea(
         child: Column(
           children: [
-            MediaQuery.of(context).orientation == Orientation.portrait
-                ? ButtonsRow(categories: categories)
-                : Container(),
             Expanded(
               child: FutureBuilder<List<Auction>>(
                 future: futureAuctions,
@@ -88,20 +92,32 @@ class _ProductsState extends State<Products> {
                     );
                   } else if (snapshot.hasData) {
                     final auctions = snapshot.data!;
-                    return GridView.builder(
-                      padding: const EdgeInsets.all(16),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 16,
-                        mainAxisSpacing: 16,
-                        childAspectRatio: 0.65,
-                      ),
-                      itemCount: auctions.length,
-                      itemBuilder: (context, index) {
-                        return ItemCard(auction: auctions[index]);
-                      },
-                    );
+                    if (auctions.isEmpty) {
+                      return Center(
+                        child: Column(
+                          children: [
+                            Lottie.network(
+                                "https://d1jj76g3lut4fe.cloudfront.net/saved_colors/109057/MQEpgeoCSFammLqd.json"),
+                            const Text("No auction found!"),
+                          ],
+                        ),
+                      );
+                    } else {
+                      return GridView.builder(
+                        padding: const EdgeInsets.all(16),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 16,
+                          childAspectRatio: 0.65,
+                        ),
+                        itemCount: auctions.length,
+                        itemBuilder: (context, index) {
+                          return ItemCard(auction: auctions[index]);
+                        },
+                      );
+                    }
                   } else {
                     return const Center(
                       child: Text('No data available'),

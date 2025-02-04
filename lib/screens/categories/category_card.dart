@@ -1,4 +1,5 @@
 import 'package:bidgrab/models/category.dart';
+import 'package:bidgrab/screens/products/products.dart';
 import 'package:flutter/material.dart';
 
 class CategoryCard extends StatelessWidget {
@@ -10,7 +11,11 @@ class CategoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        print("Tapped");
+        Navigator.pushNamed(
+          context,
+          Products.id,
+          arguments: 'categories/${category.id}',
+        );
       },
       borderRadius: const BorderRadius.all(Radius.circular(16)),
       child: Container(

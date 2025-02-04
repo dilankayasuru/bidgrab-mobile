@@ -1,10 +1,12 @@
 import 'package:bidgrab/models/auction.dart';
+import 'package:bidgrab/screens/products/components/countdown.dart';
 import 'package:bidgrab/screens/products/products.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../../controllers/auction_controller.dart';
 import '../home/components/AuctionsSlider.dart';
+import 'package:intl/intl.dart';
 
 class ProductView extends StatefulWidget {
   const ProductView({super.key});
@@ -20,9 +22,9 @@ class _ProductViewState extends State<ProductView> {
 
   @override
   void didChangeDependencies() {
-    super.didChangeDependencies();
     final auctionId = ModalRoute.of(context)!.settings.arguments as String;
     futureAuction = AuctionController.fetchAuction(http.Client(), auctionId);
+    super.didChangeDependencies();
   }
 
   @override
@@ -37,7 +39,6 @@ class _ProductViewState extends State<ProductView> {
           } else if (!snapshot.hasData) {
             return const Center(child: Text('No data available'));
           }
-
           Auction auction = snapshot.data!;
           return Scaffold(
             appBar: AppBar(
@@ -62,7 +63,7 @@ class _ProductViewState extends State<ProductView> {
                       itemBuilder: (BuildContext context, int index) {
                         return Image(
                           image: NetworkImage(auction.images![index]),
-                          fit: BoxFit.cover,
+                          fit: BoxFit.contain,
                         );
                       },
                       autoplay: true,
@@ -121,7 +122,7 @@ class _ProductViewState extends State<ProductView> {
                           child: Text(
                             '${auction.bidCount ?? 0} Bids',
                             style: const TextStyle(
-                              fontSize: 20,
+                              fontSize: 16,
                             ),
                           ),
                         ),
@@ -137,14 +138,17 @@ class _ProductViewState extends State<ProductView> {
                             ),
                             color: Colors.blue.withOpacity(0.10),
                           ),
-                          child: Text(
-                            auction.title!.length > 30
-                                ? '${auction.title?.substring(0, 30)}...'
-                                : auction.title ?? "No title",
-                            style: const TextStyle(
-                              fontSize: 24,
-                            ),
-                          ),
+                          child: auction.startingDate != null &&
+                                  auction.endDate != null
+                              ? Countdown(
+                                  startingDate: auction.startingDate!,
+                                  endDate: auction.endDate!)
+                              : const Text(
+                                  "No data",
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                  ),
+                                ),
                         ),
                         const SizedBox(
                           height: 16,
@@ -164,10 +168,10 @@ class _ProductViewState extends State<ProductView> {
                               ),
                             ),
                           ),
-                          child: const Text(
-                            'Condition: New',
-                            style: TextStyle(
-                              fontSize: 20,
+                          child: Text(
+                            'Condition: ${auction.condition}',
+                            style: const TextStyle(
+                              fontSize: 16,
                             ),
                           ),
                         ),
@@ -189,7 +193,7 @@ class _ProductViewState extends State<ProductView> {
                           child: Text(
                             'Duration: ${auction.duration ?? "No data"} days',
                             style: const TextStyle(
-                              fontSize: 20,
+                              fontSize: 16,
                             ),
                           ),
                         ),
@@ -209,41 +213,211 @@ class _ProductViewState extends State<ProductView> {
                             ),
                           ),
                           child: Text(
-                            'Started date: ${auction.startingDate}',
+                            'Started date: ${DateFormat('MMMM dd, yyyy').format(DateTime.parse(auction.startingDate!))}',
                             style: const TextStyle(
-                              fontSize: 20,
+                              fontSize: 16,
                             ),
                           ),
                         ),
-                        Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 8,
-                            horizontal: 16,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.1),
-                            border: const Border(
-                              bottom: BorderSide(
-                                color: Colors.grey,
-                                width: 1,
-                              ),
-                            ),
-                          ),
-                          child: const Text(
-                            'Seller: Dilanka Yasuru',
-                            style: TextStyle(
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
+                        auction.specs?.brand != null
+                            ? Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 8,
+                                  horizontal: 16,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  border: const Border(
+                                    bottom: BorderSide(
+                                      color: Colors.grey,
+                                      width: 1,
+                                    ),
+                                  ),
+                                ),
+                                child: Text(
+                                  'Brand: ${auction.specs?.brand}',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              )
+                            : Container(),
+                        auction.specs?.model != null
+                            ? Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 8,
+                                  horizontal: 16,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  border: const Border(
+                                    bottom: BorderSide(
+                                      color: Colors.grey,
+                                      width: 1,
+                                    ),
+                                  ),
+                                ),
+                                child: Text(
+                                  'Model: ${auction.specs?.model}',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              )
+                            : Container(),
+                        auction.specs?.material != null
+                            ? Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 8,
+                                  horizontal: 16,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  border: const Border(
+                                    bottom: BorderSide(
+                                      color: Colors.grey,
+                                      width: 1,
+                                    ),
+                                  ),
+                                ),
+                                child: Text(
+                                  'Material: ${auction.specs?.material}',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              )
+                            : Container(),
+                        auction.specs?.size != null
+                            ? Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 8,
+                                  horizontal: 16,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  border: const Border(
+                                    bottom: BorderSide(
+                                      color: Colors.grey,
+                                      width: 1,
+                                    ),
+                                  ),
+                                ),
+                                child: Text(
+                                  'Size: ${auction.specs?.size}',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              )
+                            : Container(),
+                        auction.specs?.color != null
+                            ? Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 8,
+                                  horizontal: 16,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  border: const Border(
+                                    bottom: BorderSide(
+                                      color: Colors.grey,
+                                      width: 1,
+                                    ),
+                                  ),
+                                ),
+                                child: Text(
+                                  'Color: ${auction.specs?.color}',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              )
+                            : Container(),
+                        auction.specs?.dimensions != null
+                            ? Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 8,
+                                  horizontal: 16,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  border: const Border(
+                                    bottom: BorderSide(
+                                      color: Colors.grey,
+                                      width: 1,
+                                    ),
+                                  ),
+                                ),
+                                child: Text(
+                                  'Dimensions: ${auction.specs?.dimensions}',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              )
+                            : Container(),
+                        auction.specs?.features != null
+                            ? Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 8,
+                                  horizontal: 16,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  border: const Border(
+                                    bottom: BorderSide(
+                                      color: Colors.grey,
+                                      width: 1,
+                                    ),
+                                  ),
+                                ),
+                                child: Text(
+                                  'Features: ${auction.specs?.features}',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              )
+                            : Container(),
+                        auction.specs?.manufacturedYear != null
+                            ? Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 8,
+                                  horizontal: 16,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  border: const Border(
+                                    bottom: BorderSide(
+                                      color: Colors.grey,
+                                      width: 1,
+                                    ),
+                                  ),
+                                ),
+                                child: Text(
+                                  'Manufactured: ${auction.specs?.manufacturedYear}',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              )
+                            : Container(),
                         const SizedBox(
                           height: 16,
                         ),
                         const Text(
                           "Description",
                           style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
+                              fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(
                           height: 8,
@@ -251,7 +425,7 @@ class _ProductViewState extends State<ProductView> {
                         Text(
                           auction.description ?? "No data",
                           style: const TextStyle(
-                            fontSize: 20,
+                            fontSize: 16,
                           ),
                         ),
                         const SizedBox(

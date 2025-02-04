@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:bidgrab/models/specs.dart';
 
 class Auction {

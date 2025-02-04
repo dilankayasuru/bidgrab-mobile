@@ -30,129 +30,122 @@ class AuctionCard extends StatelessWidget {
           color: value.darkModeEnabled ? Colors.white10 : Colors.white,
         ),
         width: 280,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: Stack(
           children: [
-            Image(
-              image: NetworkImage(auction.images?[0] ?? ''),
-              fit: BoxFit.fitWidth,
-              height: 145,
-            ),
-            Container(
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Column(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Image(
+                  image: NetworkImage(auction.images?[0] ?? ''),
+                  fit: BoxFit.contain,
+                  height: 145,
+                ),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(
-                        auction.title!.length > 30
-                            ? '${auction.title?.substring(0, 30)}...'
-                            : auction.title ?? "No title",
-                        style: const TextStyle(
-                          fontSize: 24,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            auction.title!.length > 30
+                                ? '${auction.title?.substring(0, 30)}...'
+                                : auction.title ?? "No title",
+                            style: const TextStyle(
+                              fontSize: 24,
+                            ),
+                          ),
+                          Text(
+                            auction.categoryName ?? "No category",
+                            style: const TextStyle(
+                                color: Colors.grey, fontSize: 16),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      const Text(
+                        "Last bid",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                        decoration: BoxDecoration(
+                            color: value.darkModeEnabled
+                                ? Colors.white10
+                                : Colors.blue.shade50,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(32)),
+                            border: Border.all(
+                                color: value.darkModeEnabled
+                                    ? Colors.white10
+                                    : Colors.blue.shade100)),
+                        child: Center(
+                          child: Text(
+                            "Rs. ${auction.currentPrice ?? ""}",
+                            style: const TextStyle(fontSize: 20),
+                          ),
                         ),
                       ),
-                      Text(
-                        auction.categoryName ?? "No category",
-                        style:
-                            const TextStyle(color: Colors.grey, fontSize: 16),
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Last bid",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                            decoration: BoxDecoration(
-                                color: value.darkModeEnabled
-                                    ? Colors.white10
-                                    : Colors.blueGrey.shade50,
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(8)),
-                                border: Border.all(
-                                    color: value.darkModeEnabled
-                                        ? Colors.white10
-                                        : Colors.blue.shade100)),
-                            child: Text(
-                              "Rs. ${auction.currentPrice ?? ""}",
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                          ),
-                        ],
+                      const SizedBox(
+                        height: 8,
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Row(
+                        spacing: 8,
                         children: [
-                          const Text(
-                            "Ending in",
-                            style: TextStyle(fontSize: 20),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                context,
+                                ProductView.id,
+                                arguments: auction.id,
+                              );
+                            },
+                            child: const Text(
+                              "View Auction",
+                              style: TextStyle(fontSize: 16),
+                            ),
                           ),
-                          Container(
-                            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                            decoration: BoxDecoration(
-                                color: value.darkModeEnabled
-                                    ? Colors.white10
-                                    : Colors.blueGrey.shade50,
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(8)),
-                                border: Border.all(
-                                    color: value.darkModeEnabled
-                                        ? Colors.white10
-                                        : Colors.blue.shade100)),
-                            child: Text(
-                              // TODO ending
-                              " left",
-                              style: const TextStyle(fontSize: 16),
+                          Expanded(
+                            child: FilledButton(
+                              onPressed: () {},
+                              child: const Text(
+                                "Bid",
+                                style: TextStyle(fontSize: 16),
+                              ),
                             ),
                           ),
                         ],
                       )
                     ],
                   ),
-                  MediaQuery.of(context).orientation == Orientation.portrait
-                      ? Padding(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    ProductView.id,
-                                    arguments: auction.id,
-                                  );
-                                },
-                                child: const Text(
-                                  "View Auction",
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                              ),
-                              FilledButton(
-                                onPressed: () {},
-                                child: const Text(
-                                  "Bid",
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      : Container(),
+                ),
+              ],
+            ),
+            Container(
+              decoration: const BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 25,
+                  )
                 ],
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(16),
+                    bottomRight: Radius.circular(16)),
+                color: Colors.white,
+              ),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 8,
+              ),
+              child: Text(
+                "${auction.bidCount} Bids",
+                style: const TextStyle(
+                  color: Colors.black,
+                ),
               ),
             ),
           ],

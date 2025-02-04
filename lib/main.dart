@@ -61,8 +61,10 @@ class MyApp extends StatelessWidget {
           // Product view screen route.
           Profile.id: (context) => const Profile(),
           // Profile screen route.
-          Products.id: (context) => const Products(),
-          // Profile screen route.
+          Products.id: (context) {
+            final args = ModalRoute.of(context)?.settings.arguments as String?;
+            return Products(url: args ?? 'auctions');
+          },
         },
         // Set the theme mode based on the current theme.
         themeMode: value.darkModeEnabled ? ThemeMode.dark : ThemeMode.light,

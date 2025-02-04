@@ -36,7 +36,7 @@ class _CategoriesState extends State<Categories> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.all(16),
           child: FutureBuilder<List<Category>>(
             future: futureCategories,
             builder: (context, snapshot) {
