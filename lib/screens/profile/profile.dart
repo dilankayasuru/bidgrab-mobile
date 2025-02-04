@@ -1,5 +1,6 @@
 import 'package:bidgrab/controllers/auth_controller.dart';
 import 'package:bidgrab/providers/authProvider.dart';
+import 'package:bidgrab/screens/profile/profile_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -44,23 +45,9 @@ class Profile extends StatelessWidget {
         child: SizedBox(child:
             Consumer<AuthProvider>(builder: (context, authProvider, child) {
           final user = authProvider.getUser();
-          print(user.profilePic);
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
-                "Change your profile",
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              // CircleAvatar(
-              //   backgroundImage: NetworkImage(user.profilePic as String),
-              //   maxRadius: 56,
-              // ),
               ClipOval(
                 child: Image.network(
                   user.profilePic as String,
@@ -81,6 +68,7 @@ class Profile extends StatelessWidget {
                   color: Colors.grey,
                 ),
               ),
+              ProfileMenu(),
               Center(
                 child: Container(
                   constraints: BoxConstraints(
@@ -111,68 +99,47 @@ class Profile extends StatelessWidget {
                       const SizedBox(
                         height: 16,
                       ),
-                      const TextField(
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(16),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(16)),
-                          ),
-                          label: Text("Email"),
+                      SizedBox(
+                        width: MediaQuery.of(context).orientation ==
+                                Orientation.portrait
+                            ? double.infinity
+                            : 320,
+                        child: FilledButton(
+                          onPressed: () {},
+                          child: const Text("Save"),
                         ),
                       ),
                       const SizedBox(
                         height: 16,
                       ),
                       const Text(
-                        "Contact information",
+                        "Change password",
                         style: TextStyle(fontSize: 20),
                       ),
                       const SizedBox(
                         height: 16,
                       ),
                       const TextField(
+                        obscureText: true,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.all(16),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(16)),
                           ),
-                          label: Text("Phone"),
+                          label: Text("Password"),
                         ),
                       ),
                       const SizedBox(
                         height: 16,
                       ),
                       const TextField(
+                        obscureText: true,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.all(16),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(16)),
                           ),
-                          label: Text("Address"),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      const TextField(
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(16),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(16)),
-                          ),
-                          label: Text("Street"),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      const TextField(
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(16),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(16)),
-                          ),
-                          label: Text("District"),
+                          label: Text("Confirm password"),
                         ),
                       ),
                       const SizedBox(
@@ -185,9 +152,9 @@ class Profile extends StatelessWidget {
                             : 320,
                         child: FilledButton(
                           onPressed: () {},
-                          child: const Text("Submit"),
+                          child: const Text("Save password"),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),

@@ -1,4 +1,5 @@
 import 'package:bidgrab/models/auction.dart';
+import 'package:bidgrab/screens/products/products.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -42,7 +43,7 @@ class _ProductViewState extends State<ProductView> {
             appBar: AppBar(
               leading: IconButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.pushNamed(context, Products.id);
                 },
                 icon: const Icon(Icons.arrow_back),
               ),
@@ -265,7 +266,7 @@ class _ProductViewState extends State<ProductView> {
                           ),
                         ),
                         const SizedBox(
-                          height: 80,
+                          height: 64,
                         )
                       ],
                     ),
@@ -275,7 +276,7 @@ class _ProductViewState extends State<ProductView> {
             ),
             bottomSheet: Container(
               width: double.infinity,
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+              padding: const EdgeInsets.all(16),
               child: FilledButton(
                 onPressed: () {},
                 style: ButtonStyle(

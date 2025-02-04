@@ -21,7 +21,7 @@ class Auth {
     final deviceInfoPlugin = DeviceInfoPlugin();
     final deviceInfo = await deviceInfoPlugin.androidInfo;
     var response = await http.post(
-      Uri.parse('$app_url/api/login'),
+      Uri.parse('$app_url/api/auth/login'),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({
         "email": email,
@@ -49,7 +49,7 @@ class Auth {
   static Future<void> logout() async {
     String? token = await storage.read(key: "auth_token");
     var response = await http.post(
-      Uri.parse('$app_url/api/logout'),
+      Uri.parse('$app_url/api/auth/logout'),
       headers: {
         "Content-Type": "application/json",
         HttpHeaders.authorizationHeader: 'Bearer $token',
@@ -70,7 +70,7 @@ class Auth {
     final deviceInfoPlugin = DeviceInfoPlugin();
     final deviceInfo = await deviceInfoPlugin.androidInfo;
     var response = await http.post(
-      Uri.parse('$app_url/api/register'),
+      Uri.parse('$app_url/api/auth/register'),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({
         "name": name,

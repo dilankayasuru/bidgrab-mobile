@@ -1,56 +1,28 @@
 import 'package:bidgrab/models/category.dart';
-import 'package:bidgrab/models/data.dart';
-import 'package:bidgrab/providers/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'package:bidgrab/controllers/category_controller.dart';
+import 'category_card.dart';
 
-class Categories extends StatelessWidget {
+class Categories extends StatefulWidget {
   const Categories({super.key});
 
   @override
+  State<Categories> createState() => _CategoriesState();
+}
+
+class _CategoriesState extends State<Categories> {
+  late Future<List<Category>> futureCategories;
+
+  @override
+  void initState() {
+    super.initState();
+    futureCategories =
+        CategoryController.fetchCategories(http.Client(), 'categories');
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // List to hold category widgets
-    List<Widget> categories = [];
-
-    // Loop through each category in the data model and create a widget for it
-    for (Category category in DataModel().categories) {
-      categories.add(
-        // Consumer widget to listen to changes in ThemeProvider
-        Consumer<ThemeProvider>(
-          builder: (context, value, child) => InkWell(
-            // Rounded corners for the InkWell widget
-            borderRadius: const BorderRadius.all(Radius.circular(16)),
-            splashColor:
-                value.darkModeEnabled ? Colors.white10 : Colors.blue.shade50,
-            onTap: () {},
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Display category image
-                Image(
-                  image: AssetImage("images/categories/${category.image}"),
-                  width: 64,
-                  height: 64,
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-                // Display category name
-                Text(
-                  category.name,
-                  style: const TextStyle(
-                    fontSize: 20,
-                  ),
-                  textAlign: TextAlign.center,
-                )
-              ],
-            ),
-          ),
-        ),
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Categories"),
@@ -63,18 +35,30 @@ class Categories extends StatelessWidget {
         ),
       ),
       body: SafeArea(
-        // GridView to display categories in a grid format
-        child: GridView.count(
-          // Number of columns based on screen width
-          crossAxisCount: MediaQuery.of(context).size.width < 700
-              ? 2
-              : (MediaQuery.of(context).size.width < 1400 ? 4 : 6),
-          padding: const EdgeInsets.all(16),
-          crossAxisSpacing: 16,
-          mainAxisSpacing: 16,
-          shrinkWrap: true,
-          // Add category widgets to the grid
-          children: categories,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: FutureBuilder<List<Category>>(
+            future: futureCategories,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return const Center(
+                  child: Text('An error has occurred!'),
+                );
+              } else if (snapshot.hasData) {
+                List<Category> categories = snapshot.data!;
+                return Column(
+                  spacing: 16,
+                  children: categories
+                      .map((category) => CategoryCard(category: category))
+                      .toList(),
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          ),
         ),
       ),
     );

@@ -10,6 +10,8 @@ import 'package:http/http.dart' as http;
 class Products extends StatefulWidget {
   const Products({super.key});
 
+  static String id = "";
+
   @override
   State<Products> createState() => _ProductsState();
 }
@@ -40,7 +42,7 @@ class _ProductsState extends State<Products> {
                     hintText: "Search items...",
                   ),
                 )
-              : const Text("Products"),
+              : const Text("Auctions"),
         ),
         leading: IconButton(
           onPressed: () {
@@ -86,24 +88,19 @@ class _ProductsState extends State<Products> {
                     );
                   } else if (snapshot.hasData) {
                     final auctions = snapshot.data!;
-                    return GridView.count(
-                      crossAxisCount: MediaQuery.of(context).size.width < 700
-                          ? 2
-                          : (MediaQuery.of(context).size.width < 1400 ? 4 : 6),
-                      childAspectRatio: MediaQuery.of(context).orientation ==
-                              Orientation.portrait
-                          ? 0.68
-                          : 0.85,
-                      mainAxisSpacing: 16,
-                      crossAxisSpacing: 32,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 0),
-                      shrinkWrap: true,
-                      children: auctions.map((auction) {
-                        return ItemCard(
-                          auction: auction,
-                        );
-                      }).toList(),
+                    return GridView.builder(
+                      padding: const EdgeInsets.all(16),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 16,
+                        mainAxisSpacing: 16,
+                        childAspectRatio: 0.65,
+                      ),
+                      itemCount: auctions.length,
+                      itemBuilder: (context, index) {
+                        return ItemCard(auction: auctions[index]);
+                      },
                     );
                   } else {
                     return const Center(

@@ -3,6 +3,7 @@ import 'package:bidgrab/providers/theme.dart';
 import 'package:bidgrab/screens/mainLayout.dart';
 import 'package:bidgrab/screens/products/productView.dart';
 import 'package:bidgrab/screens/profile/profile.dart';
+import 'package:bidgrab/screens/products/products.dart';
 import 'package:bidgrab/screens/signin/SignIn.dart';
 import 'package:bidgrab/screens/signup/SignUp.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +60,8 @@ class MyApp extends StatelessWidget {
           ProductView.id: (context) => const ProductView(),
           // Product view screen route.
           Profile.id: (context) => const Profile(),
+          // Profile screen route.
+          Products.id: (context) => const Products(),
           // Profile screen route.
         },
         // Set the theme mode based on the current theme.

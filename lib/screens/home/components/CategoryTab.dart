@@ -19,6 +19,7 @@ class CategoryTab extends StatelessWidget {
               // TODO
               print("Taped");
             },
+            borderRadius: BorderRadius.circular(128),
             child: Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
