@@ -1,6 +1,8 @@
 import 'package:bidgrab/providers/authProvider.dart';
 import 'package:bidgrab/providers/theme.dart';
+import 'package:bidgrab/screens/dashboard/auctions.dart';
 import 'package:bidgrab/screens/dashboard/create_new_auction.dart';
+import 'package:bidgrab/screens/dashboard/orders.dart';
 import 'package:bidgrab/screens/dashboard/purchases.dart';
 import 'package:bidgrab/screens/mainLayout.dart';
 import 'package:bidgrab/screens/products/productView.dart';
@@ -9,10 +11,14 @@ import 'package:bidgrab/screens/products/products.dart';
 import 'package:bidgrab/screens/signin/SignIn.dart';
 import 'package:bidgrab/screens/signup/SignUp.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
+
+import 'config.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = Config.STRIPE_PUBLISHABLE_KEY;
   final bool isSystemDarkMode =
       WidgetsBinding.instance.window.platformBrightness == Brightness.dark;
 
@@ -69,6 +75,8 @@ class MyApp extends StatelessWidget {
           },
           CreateNewAuction.id: (context) => const CreateNewAuction(),
           Purchases.id: (context) => const Purchases(),
+          Orders.id: (context) => const Orders(),
+          Auctions.id: (context) => const Auctions(),
         },
         // Set the theme mode based on the current theme.
         themeMode: value.darkModeEnabled ? ThemeMode.dark : ThemeMode.light,

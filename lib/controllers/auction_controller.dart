@@ -107,4 +107,38 @@ class AuctionController {
     var response = await request.send();
     return http.Response.fromStream(response);
   }
+
+  static Future<List<Auction>> fetchOwnAuctions(http.Client client) async {
+    const storage = FlutterSecureStorage();
+    String? token = await storage.read(key: "auth_token");
+    if (token == null) {
+      throw ("You must login to get your auctions!");
+    }
+    final response = await client.get(
+      Uri.parse('${Config.APP_URL}/api/auctions/own/user'),
+      headers: {
+        "Content-Type": "application/json",
+        HttpHeaders.authorizationHeader: 'Bearer $token',
+      },
+    );
+    return foundation.compute(_parseAuctions, response.body);
+  }
+
+  static Future<void> delete(Auction auction) async {
+    const storage = FlutterSecureStorage();
+    String? token = await storage.read(key: "auth_token");
+    if (token == null) {
+      throw ("You must login to delete your auction!");
+    }
+    final response = await http.delete(
+      Uri.parse('${Config.APP_URL}/api/auctions'),
+      headers: {
+        "Content-Type": "application/json",
+        HttpHeaders.authorizationHeader: 'Bearer $token',
+      },
+    );
+    if (response.statusCode != 204) {
+      throw ('Auction can not delete!');
+    }
+  }
 }

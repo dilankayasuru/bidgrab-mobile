@@ -1,25 +1,24 @@
 import 'package:bidgrab/controllers/order_controller.dart';
 import 'package:bidgrab/models/order.dart';
-import 'package:bidgrab/serviecs/stripe_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 
-class Purchases extends StatefulWidget {
-  const Purchases({super.key});
+class Orders extends StatefulWidget {
+  const Orders({super.key});
 
-  static String id = "/purchases";
+  static String id = "/orders";
 
   @override
-  State<Purchases> createState() => _PurchasesState();
+  State<Orders> createState() => _OrdersState();
 }
 
-class _PurchasesState extends State<Purchases> {
+class _OrdersState extends State<Orders> {
   late Future<List<Order>> futureOrders;
 
   @override
   void initState() {
-    futureOrders = OrderController.fetchPurchases(http.Client());
+    futureOrders = OrderController.fetchOrders(http.Client());
     super.initState();
   }
 
@@ -27,7 +26,7 @@ class _PurchasesState extends State<Purchases> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("My purchases"),
+        title: const Text("My orders"),
         leading: IconButton(
           onPressed: () {
             Navigator.pushNamed(context, '/');
@@ -58,7 +57,7 @@ class _PurchasesState extends State<Purchases> {
                     child: Column(
                       children: [
                         Lottie.asset("images/lottie/empty.json"),
-                        const Text("No purchases found!"),
+                        const Text("No orders found!"),
                       ],
                     ),
                   );
@@ -66,7 +65,7 @@ class _PurchasesState extends State<Purchases> {
                   List<Order> purchases = snapshot.data!;
                   return Column(
                     children: purchases
-                        .map((purchase) => Card(
+                        .map((order) => Card(
                               shape: const RoundedRectangleBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(16)),
@@ -75,7 +74,7 @@ class _PurchasesState extends State<Purchases> {
                               child: Padding(
                                 padding: const EdgeInsets.all(16),
                                 child: ExpansionTile(
-                                  title: purchase.auction != null
+                                  title: order.auction != null
                                       ? Row(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -83,7 +82,7 @@ class _PurchasesState extends State<Purchases> {
                                               MainAxisAlignment.start,
                                           children: [
                                             Image.network(
-                                              purchase.auction!.images![0],
+                                              order.auction!.images![0],
                                               width: 64,
                                               height: 64,
                                             ),
@@ -94,11 +93,11 @@ class _PurchasesState extends State<Purchases> {
                                                 SizedBox(
                                                   width: 128,
                                                   child: Text(
-                                                    purchase.auction!.title!
+                                                    order.auction!.title!
                                                                 .length >
                                                             30
-                                                        ? '${purchase.auction!.title!.substring(0, 30)}...'
-                                                        : purchase.auction!
+                                                        ? '${order.auction!.title!.substring(0, 30)}...'
+                                                        : order.auction!
                                                                 .title ??
                                                             "No title",
                                                     style: const TextStyle(
@@ -108,8 +107,8 @@ class _PurchasesState extends State<Purchases> {
                                                   ),
                                                 ),
                                                 Text(
-                                                    'Rs. ${purchase.auction!.currentPrice!}'),
-                                                Text(purchase.status!),
+                                                    'Rs. ${order.auction!.currentPrice!}'),
+                                                Text(order.status!),
                                               ],
                                             )
                                           ],
@@ -119,38 +118,38 @@ class _PurchasesState extends State<Purchases> {
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 8),
-                                      child: purchase.status == "pending"
-                                          ? ElevatedButton(
-                                              onPressed: () async {
-                                                if (await StripeService.instance.makePayment(purchase)) {
-                                                  Navigator.pushNamed(context, "/");
-                                                }
-                                              },
-                                              child: const Text("Pay now"),
-                                            )
-                                          : Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                const Text(
-                                                    "Delivery information"),
-                                                Text(
-                                                    "Address line1: ${purchase.address?.line1 ?? 'N/A'}"),
-                                                Text(
-                                                    "Address line2: ${purchase.address?.line2 ?? 'N/A'}"),
-                                                Text(
-                                                    "City: ${purchase.address?.city ?? 'N/A'}"),
-                                                Text(
-                                                    "Postal code: ${purchase.address?.postalCode ?? 'N/A'}"),
-                                                Text(
-                                                    "Country: ${purchase.address?.country ?? 'N/A'}"),
-                                                Text(
-                                                    "Phone: ${purchase.address?.phone ?? 'N/A'}"),
-                                              ],
-                                            ),
-                                    )
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Text("Delivery information"),
+                                          Text(
+                                              "Address line1: ${order.address?.line1 ?? 'N/A'}"),
+                                          Text(
+                                              "Address line2: ${order.address?.line2 ?? 'N/A'}"),
+                                          Text(
+                                              "City: ${order.address?.city ?? 'N/A'}"),
+                                          Text(
+                                              "Postal code: ${order.address?.postalCode ?? 'N/A'}"),
+                                          Text(
+                                              "Country: ${order.address?.country ?? 'N/A'}"),
+                                          Text(
+                                              "Phone: ${order.address?.phone ?? 'N/A'}"),
+                                        ],
+                                      ),
+                                    ),
+                                    order.status == "payed"
+                                        ? ElevatedButton(
+                                            onPressed: () async {
+                                              await OrderController.deliver(
+                                                  order);
+                                              Navigator.pushNamed(context, '/');
+                                            },
+                                            child: const Text("Deliver now"),
+                                          )
+                                        : const SizedBox(),
                                   ],
                                 ),
                               ),

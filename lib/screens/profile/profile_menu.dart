@@ -1,5 +1,7 @@
 import 'package:bidgrab/controllers/order_controller.dart';
+import 'package:bidgrab/screens/dashboard/auctions.dart';
 import 'package:bidgrab/screens/dashboard/create_new_auction.dart';
+import 'package:bidgrab/screens/dashboard/orders.dart';
 import 'package:bidgrab/screens/dashboard/purchases.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -13,7 +15,9 @@ class ProfileMenu extends StatelessWidget {
       spacing: 16,
       children: [
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, Auctions.id);
+          },
           child: const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -38,7 +42,9 @@ class ProfileMenu extends StatelessWidget {
           ),
         ),
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, Orders.id);
+          },
           child: const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
