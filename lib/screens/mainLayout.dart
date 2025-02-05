@@ -45,7 +45,7 @@ class _MainLayOutState extends State<MainLayOut> {
             NavigationDestination(
               selectedIcon: Icon(Icons.shopping_bag),
               icon: Icon(Icons.shopping_bag_outlined),
-              label: 'Products',
+              label: 'Auctions',
             ),
             NavigationDestination(
               selectedIcon: Icon(Icons.grid_view_rounded),

@@ -59,4 +59,52 @@ class AuctionController {
     );
     return response;
   }
+
+  static Future<http.Response> create({
+    required String title,
+    required String description,
+    required double startingPrice,
+    required String categoryId,
+    required String condition,
+    required List<File> images,
+    required int duration,
+    required String startingDate,
+    Map<String, dynamic>? specs,
+  }) async {
+    const storage = FlutterSecureStorage();
+    String? token = await storage.read(key: "auth_token");
+    if (token == null) {
+      return http.Response(
+          '{"message":"You must first login to create an auction!"}', 400);
+    }
+
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse('${Config.APP_URL}/api/auctions/create'),
+    );
+
+    request.headers.addAll({
+      "Content-Type": "multipart/form-data",
+      HttpHeaders.authorizationHeader: 'Bearer $token',
+    });
+
+    request.fields['title'] = title;
+    request.fields['description'] = description;
+    request.fields['starting_price'] = startingPrice.toString();
+    request.fields['category_id'] = categoryId.toString();
+    request.fields['condition'] = condition;
+    request.fields['duration'] = duration.toString();
+    request.fields['starting_date'] = startingDate;
+    if (specs != null) {
+      request.fields['specs'] = jsonEncode(specs);
+    }
+
+    for (var image in images) {
+      request.files
+          .add(await http.MultipartFile.fromPath('images', image.path));
+    }
+
+    var response = await request.send();
+    return http.Response.fromStream(response);
+  }
 }

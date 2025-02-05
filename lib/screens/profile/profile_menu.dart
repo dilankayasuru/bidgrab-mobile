@@ -1,3 +1,4 @@
+import 'package:bidgrab/screens/dashboard/create_new_auction.dart';
 import 'package:flutter/material.dart';
 
 class ProfileMenu extends StatelessWidget {
@@ -84,7 +85,9 @@ class ProfileMenu extends StatelessWidget {
           ),
         ),
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, CreateNewAuction.id);
+          },
           child: const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,

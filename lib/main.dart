@@ -1,5 +1,6 @@
 import 'package:bidgrab/providers/authProvider.dart';
 import 'package:bidgrab/providers/theme.dart';
+import 'package:bidgrab/screens/dashboard/create_new_auction.dart';
 import 'package:bidgrab/screens/mainLayout.dart';
 import 'package:bidgrab/screens/products/productView.dart';
 import 'package:bidgrab/screens/profile/profile.dart';
@@ -65,6 +66,7 @@ class MyApp extends StatelessWidget {
             final args = ModalRoute.of(context)?.settings.arguments as String?;
             return Products(url: args ?? 'auctions');
           },
+          CreateNewAuction.id: (context) => const CreateNewAuction(),
         },
         // Set the theme mode based on the current theme.
         themeMode: value.darkModeEnabled ? ThemeMode.dark : ThemeMode.light,

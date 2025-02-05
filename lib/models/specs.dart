@@ -31,4 +31,17 @@ class Specs {
       size: json['size'] as String?,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'brand': brand,
+      'material': material,
+      'dimensions': dimensions,
+      'features': features,
+      'manufacturedYear': manufacturedYear,
+      'color': color,
+      'model': model,
+      'size': size,
+    };
+  }
 }
